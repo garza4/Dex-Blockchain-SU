@@ -1,0 +1,8 @@
+Implementation Ideas
+	Work with blockchaina and fork a current chain.
+	Forking off anychain would be fine as long as they support python. Put suggestions to chains to fork 		with below
+	++++++++++++++++++++++++++++++
+	*One idea would be to fork Stellar, which has a Python api and seems to be pretty well documented		
+
+
+	

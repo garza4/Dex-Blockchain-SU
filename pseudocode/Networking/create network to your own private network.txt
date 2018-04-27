@@ -1,0 +1,17 @@
+"""The :class:`TransactionEnvelope` object, which represents a transaction
+    envelope ready to sign and submit to send over the network.
+    When a transaction is ready to be prepared for sending over the network, it
+    must be put into a :class:`TransactionEnvelope`, which includes additional
+    metadata such as the signers for a given transaction. Ultimately, this
+    class handles signing and conversion to and from XDR for usage on Stellar's
+    network.
+    :param tx: The transaction that is encapsulated in this envelope.
+    :type tx: :class:`Transaction <stellar_base.transaction.Transaction>`
+    :param dict opts: Additional options, such as:
+        - opts.signatures, which contains a list of signatures that have
+          already been created.
+        - opts.network_id, which contains the network ID for which network this
+          transaction envelope is associated with.
+    """
+	
+	https://github.com/StellarCN/py-stellar-base/blob/v0.2/stellar_base/transaction_envelope.py
