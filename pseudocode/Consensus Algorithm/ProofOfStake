@@ -1,0 +1,12 @@
+Consensus Algorithm - Proof of Stake
+
+# Randomly pick set of forgers(the principle validator and alternates-maybe 10?) using coin age based selection
+	-Dictionary: key - account number; value - stakeAmount, coinAge(days held so far, capped at 90 days)
+	-Multiply stakeAmount by coinAge, users with higher product have a higher chance of being picked
+	-Once the forger is chosen, their coinAge is set to 0, they obtain the transaction fees (what’s left after Binance takes coins to freeze) that are added to the stakeAmount
+		*Must wait 30 days before they can be a forger again
+	-After a stake holder decides to remove their money from the “pot”, they must wait some time (maybe 10 validators or 30 days) before they receive the money; this allows for fraudulent transactions to be found and the forger to be penalized before they no longer have stake
+		
+*When validating transactions need to check to see if user has money tied up in stake too
+
+Resource: https://en.bitcoinwiki.org/wiki/Proof-of-stake
