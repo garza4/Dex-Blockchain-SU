@@ -53,8 +53,11 @@ Networking -
                 return self.freeCoins
                 when coins are initially created we can just pass pass a designated amount of free coins no matter what... 
                 
-    class node: //should be hashable... store in dictionary? or array? 
+    class node: //should be hashable... store in dictionary? or array?  
+        each node will hold sender data, transaction, private sender key,timestamp and the recipiant all hashed
         
+        
+
         "If you have a data structure already in place to describe nodes you can simply use that structure as your nodes provided it is hashable."
         NetworkX is the standard python graph library, so if we make a node class with everything we want (as long the nodes are hashable) then creating the graph with networkX should be 
         pretty simple... 
@@ -82,8 +85,23 @@ Networking -
                     hash(key) - the hash function creates a unique hash value for a user. 
                     
                 
-            
+   class minter:
+            def GetGraph(); // gets all new transactions to add to graph, initially this will be the whole graph
+                            //adds nodes to the graph by timestamp, validating each transaction it hears          
         
+    class newToken:
+        def createToken(symbol, supply, miningDec)
+
+        "Native support for new token generation is required. That is, users should be able to create new tokens simply by specifying token parameters, such as symbol, total supply, decimals, etc, without having to write smart contracts. New token generation will cost a fee, payable in the native coin of the blockchain.
+        Tokens can follow a simple structure; fixed supply, all pre-mined, etc. Again, if there is a need for a trade-off between advanced features vs speed and simplicity, the latter wins"
+
+        def calculateCost():
+            //finds the fee that must be paid by the new token creator, using total supply of the new token and current supply of the native coin
         
+        def buyCoin(symbol, coinNum):
+            // when called, a user buys the ammount of tokens based on the ammount of coins spent. This must also check total supply or there must be some way to calculate the ammount of tokens left in the system
+             
+        //calls a new node to create this new token, using the Dec to determine value of the coin. 
+
 """
     
