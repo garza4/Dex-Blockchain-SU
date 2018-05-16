@@ -21,6 +21,10 @@ From 5/15/18
 8) https://networkx.github.io/documentation/stable/install.html - found the standard python library for graphs... We might not actually need to use stellar-base... We'll see
 9) https://neonx.readthedocs.io/en/latest/readme.html - Emailed Dr. Stolper asking for a graph reccommendation, gave networkX. Also reccommended neo4j for node database
 
+From 5/16/18
+10) https://docs.python.org/2/tutorial/classes.html - all about Python classes
+11) https://www.guru99.com/learn-python-main-function-with-examples-understand-main.html - weird way python uses a main function. I think we will have a main class and call all our code in there
+
 from stellar_base.memo include Memo --- how to include stellar libraries -- lol might not need
 
 ****************************************
@@ -53,6 +57,10 @@ Networking -
                 return self.freeCoins
                 when coins are initially created we can just pass pass a designated amount of free coins no matter what... 
                 
+            def sendCoins(user, amount):
+                gives coins to a user. 
+                Created after looking at the newTokenClass
+                
     class node: //should be hashable... store in dictionary? or array?  
         each node will hold sender data, transaction, private sender key,timestamp and the recipiant all hashed
         
@@ -63,21 +71,18 @@ Networking -
         pretty simple... 
         
         
-        def __init__ (self, user, transactionInfo):
+        def __init__(self, user, amountExchanged, receiver):
             
-            def createNode(self, sender, receiver, amount):
-                Nodes are transactions so this should create a new node node linking two users. 
+            def createNode(sender, receiver, amount):
+                Nodes are transactions so this should create a new node node linking the appropriate transactions 
+               
                 user.amountOfCoin = user.amountOfCoin - amount
                 if(checkForValidTransaction(user, amount)) then self.add(newNode)
                 
             
-        
             def makePurchase(amount, toWho):
                 the "toWho" will be the username of the person trying to get the coin... We will have that information from the Master Dictionary
             
-            def checkForValidTransaction(user, amountOfCoin):
-                this function will be the continuous checking that ensures that all transactions up to that transaction have been valid, if it is not valid then return false and void
-                the fraudulent transaction. 
                 
     class user:
             def __init__(self, amountOfCoin, privateKey):
@@ -86,8 +91,38 @@ Networking -
                     
                 
    class minter:
-            def GetGraph(); // gets all new transactions to add to graph, initially this will be the whole graph
-                            //adds nodes to the graph by timestamp, validating each transaction it hears          
+       
+               def checkForValidTransaction(user, amountOfCoin):
+                   this function will be the continuous checking that ensures that all transactions up to that transaction have been valid, if it is not valid then return false and void
+                   the fraudulent transaction.
+               
+               def GetGraph() // gets all new transactions to add to graph, initially this will be the whole graph
+                                //adds nodes to the graph by timestamp, validating each transaction it hears   
+                                
+                                -Bobby 
+                                    //ordered array? 
+                                    for example:
+                                        
+                                            order by timestamp
+                                            _transaction = node()
+                                        
+                                            for i in range arr:
+                                            
+                                                _transaction = arr[i] // first transaction .... last transaction
+                                            
+                                                if(checkForValidTransaction(node.user, node.amount)):
+                                                    node.createNode(transaction.user ,transaction.receiver, transaction.amountExchanged)
+                                            
+                                                else: void the transaction
+                                                
+                            **********************
+                            just to clarify, the transaction var would just end up being of node type, so this will be used to call node functions like createNode.
+                            The _transaction is a private instance of node.
+                            Also, should checkForValidTransaction be in the minter class? It definitely should, I was thinkng to myself and made a decision, any thoughts? 
+                            Where should the graph live? in its own class? somewhere in the network class? 
+                            **********************
+                                                
+                                        
         
     class newToken:
         def createToken(symbol, supply, miningDec)
