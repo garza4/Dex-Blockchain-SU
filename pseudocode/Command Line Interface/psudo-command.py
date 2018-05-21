@@ -2,33 +2,41 @@
 Python has a Command Interpreter called argparse 
 This can be used for the different interfaces
 
-Personal Wallet Interface (Hold Y ammount of transactions for a single user): 
-    Commands: 
-            Send(double x, recipiant address): Sends x ammount of the native coin to the address specified 
-                                               by broadcasting this transaction to network nodes that contain 
-                                                and validate all transactions. Returns true if sucsessful, false
-                                                if not. Will also return false if the ammount sent is more than currently 
-                                                held by the wallet. Takes the transaction, recipiant, walletAddress, timestamp, and private key, sending the hash. The
-                                                network node then validates it by checking the hash and using the consensus alg, seeing that a transaciton is valid by
-                                                checking the previous transactions of the sender. 
-            Receive(): A function constantly pinging local network nodes to find any transactions involving the wallent, 
-                                                specifically if any coins have been sent to the wallet 
-            CreateToken(Symb, amm, digets, etc): Sends a transaction to a node, creating a new token and burning the required ammount of coins for it
-                                                Returns true if created, false if one token already exists with the same symbol
-            Exchange(SymbA, SymbB): Echanges tokens for tokens or tokens for coins or vice versa by broadcasting the request to a local network node, 
-                                    Returns true if the exchange occurs and updates wallet, false if no exchange is possable or does not occur, the token is
-                                    fired, or the token does not exist
-Network Nodes (Hold copies of the entire network )
-            Validate(transaction): Takes a transaction and validates it by checking the sender's branch of the graph, finding a valid set of transactions that
-                                    allow it to be possable. Also factors in expense for sending the coins/tokens
-            Listen(): A function that continuously listens for transactions and getGraphs().
-            getGraph(time): calls for another network graph to send their transactions from a timstamp onwards. The timestamp is the last recorded timestamp in the local graph
-            sendGraph(time): sends a graph from a given time to another network node
 
-Central Bank Node (holds all ammounts and all transactions, can isue coins):
-            issueCoins(address, ammount): sends coins to a given adreess, provided it does not go over the total coin count. validated by private key signature
-            update(ammount): changes the ammount of coins that are in the system, allowing more coins to be issued
-            burnT(symbol): burns all tokens with a symbol by changing all tokens back into the native coin, using digets specified 
-            freezeT(symbol): makes sending/exchanging a token with that symbol invalid for all nodes
-            burnC(ammount): burns the ammount of coins by factoring it into transaction costs for nodes. Nodes then change the transaction fee till that ammount is reached globaly
+            (Wallet commands)
+            WalletP: //when created, generates a random PrivateKey, takes a public key broadcast by nodes, encrypts the privatekey with the public key, sends it to the nodes to validate transactions 
+	            Graph //contains the nodes of all transactions regarding the user. updated every transaction
+	            PrivateKey //contains the private key used for hashing
+	            Fee //records current fee. 
+	            Balance //contains a double representing the total balance of a user for quick display. updated every transaction
+	            TransactionHash(ammount. privatekey, address, timestamp, fee)// creates a new transaction hash for the transaction
+	            TransactionBroadcast(amount, address, timestamp, hash, fee) //creates a node of the transaction, records it on the graph
+	            		     				       //can be broadcast
+	            Transfer(address, coinAmount) //checks amount is not negative, uses DFS on graph to find set of transactions that make it valid locally
+	            			      //broadcasts transaction to local node or all nodes if valid, returning true. returns false if it fails for any reason
+	            CreateToken(amount, decimals, symbol) //creates a new token by creating a node that records that amount, transferring a set coin amount to the 
+	            				      //central bank address by sending it to a local node 
+	            Exchange(symbol1, ammount1, symbol2, ammount2) //broadcasts to nodes, recorded on as a request for exchange. 
+            WalletN:
+            	Graph //contains the entire graph of all transactions recorded
+            	Fee //contains the amount of coins as a fee for transactions 
+            	TokenList //contains a list of all tokens symbols and digits, used for firing
+            	KeyDict //a dictionary, containing all private keys of wallets, stored securely in some way (Still figuring out)
+            	GetGraph() //calls central node or other nodes, requesting the graph to be sent. sets graph to be that received graph. 
+            	SendGraph(address) //sends a graph to a given node address 
+            	Validate(TransactionBroadcast(_,_,_,_,_), receivedAddress) //validates a transaction by checking the whole graph, using a DFS on the branch associated with the sender address
+            									//checks all previous transactions concerning that address, stopping when some combination of past transactions is found that validates it
+            	Listen(On/Off) //when on, will listen for transactions and validate them. when off the node does nothing. turning back on requires a get Graph. 
+            	Exchange Handle (Exchange(_,_,_,_) //when a exchange is heard, will set it aside until a set of exchanges are found that fulfill the exchange. when one is found, creates a set of nodes on the graph that result in the same 
+            					//thing as the exchange with one-way transactions via one receiver and one sender. Subdivides transactions if one can not be fully exchanged 
+            	Update() //pings central node for Fee update, Fire update, and Freeze Update 
+            	Fire(symbol) //will change all tokens sent using that symbol back into the native coin using the digits specified with the original creation 
+            	Freeze(symbol) //will prevent any new transactions or exchanges using that symbol. 
+            Central:
+            	Graph //
+                issueCoins(address, ammount): sends coins to a given adreess, provided it does not go over the total coin count. validated by private key signature
+            	setFee(amount or %) will send out the updated fee to all nodes
+            	setFire(symbol) broadcasts that a token is to be fired to all nodes
+            	setFreeze(symbol) broadcasts that a token is to be frozen to all nodes 
             
+                            
