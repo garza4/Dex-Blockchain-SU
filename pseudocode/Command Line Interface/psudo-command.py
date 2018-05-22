@@ -38,5 +38,31 @@ This can be used for the different interfaces
             	setFee(amount or %) will send out the updated fee to all nodes
             	setFire(symbol) broadcasts that a token is to be fired to all nodes
             	setFreeze(symbol) broadcasts that a token is to be frozen to all nodes 
+                
+"""
+class PersonalWallet:
+    
+    graph = None
+    PrivateKey = 123
+    Fee =1.2
+    def TransactionHash():
+        
+    def TransactionBroadcast():
+    
+    def Transfer():
+        
+    def CreateToken():
+    
+    def Exchange():
+    
+class NetworkNode:
+    graph = None
+    fee =123
+    TokenList = mydict[key]
+    
+
+    
+    
+    
             
                             
