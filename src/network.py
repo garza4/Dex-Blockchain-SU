@@ -15,4 +15,4 @@ class transaction:
         __to = Node(self, self.receiver, self.sender, self.transactionTime)
         G.add_node(__from,1) #add one node for the sender (__from)
         G.add_node(_to,1)   #add one node for the receiver (__to)
-        G.add_edge(__from, __to)
+        G.add_edge(__from, __to) #this will create a topographic graph, but is this what we want?
