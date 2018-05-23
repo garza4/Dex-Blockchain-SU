@@ -1,19 +1,24 @@
-import networkx as nx
+import hashlib as hlib
 
 
 
 class CentralBank:
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
-    def __init__(self, freecoins, totalCoins):
+    def __init__(self, freecoins, totalCoins, amount):
+        # when a centralBank is called the "amount" of coins are made
         self.freecoins = freecoins
         self.totalCoins = totalCoins
+        self.amount = amount
+        self.coinDict = {}
 
 
-        def createCoins(self):
+        def createCoins(amount):
             #coins will be a hash
             #have a function to create sequential coins
-
+            for i in range(0,self.amount):
+                self.coinDict[i] = i % amount #will definitely change this
+                self.freeCoins++
 
         def freezeCoins(self):
             #void a fishy transaction.
@@ -25,6 +30,7 @@ class CentralBank:
 
         def trackFreeCoins():
             #keep track of coins that are currently not being used
+            return self.freeCoins
 
         def makeTransaction(desiredAmount, ):
             #whenever someone buys a coin then subtract from freecoins
@@ -33,10 +39,12 @@ class Node:
     #in order for the node class to work with networkx nodes have to be hashable
 
     def __init__(self, user, amountExchanged, receiver, timestamp):
-        self.user = user
+        self.user = user            #hash on user
         self.amountExchanged = amountExchanged
         self.receiver = receiver
         self.timestamp = timestamp
+        seld.node = {}
+
 
 class User:
     def __init__(self, amountOfCoin, privateKey):
