@@ -13,50 +13,74 @@ class CentralBank:
         self.coinDict = {}
 
 
-        def createCoins(amount):
-            #coins will be a hash
-            #have a function to create sequential coins
-            for i in range(0,self.amount):
-                self.coinDict[i] = i % amount #will definitely change this
-                self.freeCoins++
+    def createCoins(amount):
+        #coins will be a hash
+        #have a function to create sequential coins
+        for i in range(0,self.amount):
+            self.coinDict[i] = i % amount #will definitely change this
+            self.freeCoins++
 
-        def freezeCoins(self):
-            #void a fishy transaction.
+    def freezeCoins(self):
+        #void a fishy transaction.
 
 
-        def deallocateCoins():
-            #instead of burning send to an unreachable address that that only admin
-            #can get to
+    def deallocateCoins():
+        #instead of burning send to an unreachable address that that only admin
+        #can get to
 
-        def trackFreeCoins():
-            #keep track of coins that are currently not being used
-            return self.freeCoins
+    def trackFreeCoins():
+        #keep track of coins that are currently not being used
+        return self.freeCoins
 
-        def makeTransaction(desiredAmount, ):
-            #whenever someone buys a coin then subtract from freecoins
+    def makeTransaction(desiredAmount, ):
+        #whenever someone buys a coin then subtract from freecoins
 
 class Node:
     #in order for the node class to work with networkx nodes have to be hashable
 
-    def __init__(self, user, amountExchanged, receiver, timestamp):
-        self.user = user            #hash on user
+    def __init__(self, amountExchanged, receiver, timestamp):
+
         self.amountExchanged = amountExchanged
         self.receiver = receiver
         self.timestamp = timestamp
-        seld.node = {}
+        self.nodestack = []
+
+    def nodePop():
+        #save the pop, put it back on the stack and then return the tempNode, can you do this?
+        tempNode = nodeStack.pop()
+        nodeStack.push(tempNode)
+        return tempNode
+
+    def nodePush(node):
+        nodeStack.push(node)
+
+
 
 
 class User:
-    def __init__(self, amountOfCoin, privateKey):
+    def __init__(self, amountOfCoin, privateKey, publicKey):
         self.amountOfCoin = amountOfCoin
         self.privateKey = privateKey #hash privateKey
+        self.publicKey = publicKey
 
-        def createUser(key):
-            #call a hash to make a user
+    def sendCoin(self, amountToSend):
+        if amountToSend > self.amountOfCoin:
+            return False
+        else:
+            self.amountOfCoin -= amountToSend
+            return True
+
+    def receiveCoin(self, receivingAmount):
+        if Minter.checkForValidTransaction:
+            self.amountOfCoin += receivingAmount
+            return True
+        return False
+
 
 class Minter:
 
-    def CheckForValidTransaction(user, amountExchanged):
+    def checkForValidTransaction(user, amountExchanged):
+        return True
 
 
     def getGraph():
@@ -72,6 +96,6 @@ class newToken():
         self.totalSupply = totalSupply
         _self.bank = CentralBank() #have to check to make sure the syntax is correct, but this should be a private instance of the centralBank in newToken
 
-        def calculateCost():
+    def calculateCost():
 
-        def buyCoin(symbol, coinNum):
+    def buyCoin(symbol, coinNum):
