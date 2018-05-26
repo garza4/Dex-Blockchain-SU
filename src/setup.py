@@ -38,7 +38,7 @@ class CentralBank:
 class Node:
     #in order for the node class to work with networkx nodes have to be hashable
 
-    def __init__(self, amountExchanged, receiver, timestamp):
+    def __init__(self, amountExchanged, sender, receiver, timestamp):
 
         self.amountExchanged = amountExchanged
         self.receiver = receiver
@@ -71,7 +71,7 @@ class User:
             return True
 
     def receiveCoin(self, receivingAmount):
-        if Minter.checkForValidTransaction:
+        if Minter.checkForValidTransaction(self,receivingAmount):
             self.amountOfCoin += receivingAmount
             return True
         return False
