@@ -37,22 +37,16 @@ class CentralBank:
 
 class Node:
     #in order for the node class to work with networkx nodes have to be hashable
-
-    def __init__(self, amountExchanged, sender, receiver, timestamp):
+    # hash on uniqueID
+    def __init__(self, amountExchanged, sender, receiver, timestamp, uniqueID):
 
         self.amountExchanged = amountExchanged
         self.receiver = receiver
         self.timestamp = timestamp
-        self.nodestack = []
+        self.uniqueID = uniqueID
+        
+    def getLastNode(graph, node):
 
-    def nodePop():
-        #save the pop, put it back on the stack and then return the tempNode, can you do this?
-        tempNode = nodeStack.pop()
-        nodeStack.push(tempNode)
-        return tempNode
-
-    def nodePush(node):
-        nodeStack.push(node)
 
 
 
@@ -76,14 +70,6 @@ class User:
             return True
         return False
 
-
-class Minter:
-
-    def checkForValidTransaction(user, amountExchanged):
-        return True
-
-
-    def getGraph():
 
 
 
