@@ -2,7 +2,7 @@
 """
 Created on Fri May 25 20:44:42 2018
 
-Currently Using Click for CLI, still figuring it out. 
+Currently Using Click for CLI, still figuring it out.
 
 @author: Daniel
 """
@@ -15,5 +15,3 @@ import click
 
 def transfer(ammount, address):
         print(ammount + 'sent to ' + address)
-        
-    

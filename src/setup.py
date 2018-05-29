@@ -1,4 +1,5 @@
 import hashlib as hlib
+import network as net
 
 
 
@@ -13,27 +14,27 @@ class CentralBank:
         self.coinDict = {}
 
 
-    def createCoins(amount):
+    def createCoins(amount, type):
         #coins will be a hash
         #have a function to create sequential coins
         for i in range(0,self.amount):
             self.coinDict[i] = i % amount #will definitely change this
-            self.freeCoins++
+            self.freeCoins += 1
 
-    def freezeCoins(self):
-        #void a fishy transaction.
-
-
-    def deallocateCoins():
-        #instead of burning send to an unreachable address that that only admin
-        #can get to
-
-    def trackFreeCoins():
-        #keep track of coins that are currently not being used
-        return self.freeCoins
-
-    def makeTransaction(desiredAmount, ):
-        #whenever someone buys a coin then subtract from freecoins
+    # def freezeCoins(self):
+    #     #void a fishy transaction.
+    #
+    #
+    # def deallocateCoins():
+    #     #instead of burning send to an unreachable address that that only admin
+    #     #can get to
+    #
+    # def trackFreeCoins():
+    #     #keep track of coins that are currently not being used
+    #     return self.freeCoins
+    #
+    # def makeTransaction(desiredAmount, ):
+    #     #whenever someone buys a coin then subtract from freecoins
 
 class Node:
     #in order for the node class to work with networkx nodes have to be hashable
@@ -44,31 +45,31 @@ class Node:
         self.receiver = receiver
         self.timestamp = timestamp
         self.uniqueID = uniqueID
-        
-    def getLastNode(graph, node):
-
-
-
 
 
 class User:
-    def __init__(self, amountOfCoin, privateKey, publicKey):
+    def __init__(self, amountOfCoin, privateKey, publicKey, transactions):
         self.amountOfCoin = amountOfCoin
         self.privateKey = privateKey #hash privateKey
         self.publicKey = publicKey
+        self.transactions = transactions # transactions will be a list of transactions...........
+        print "created user"
 
-    def sendCoin(self, amountToSend):
+    def sendCoin(sender,receiver, amountToSend):
         if amountToSend > self.amountOfCoin:
+            print "Exceeded amount of coin to send"
             return False
         else:
             self.amountOfCoin -= amountToSend
             return True
 
-    def receiveCoin(self, receivingAmount):
+    def receiveCoin(receiver, receivingAmount):
         if Minter.checkForValidTransaction(self,receivingAmount):
             self.amountOfCoin += receivingAmount
             return True
         return False
+
+
 
 
 
@@ -82,6 +83,6 @@ class newToken():
         self.totalSupply = totalSupply
         _self.bank = CentralBank() #have to check to make sure the syntax is correct, but this should be a private instance of the centralBank in newToken
 
-    def calculateCost():
-
-    def buyCoin(symbol, coinNum):
+    # def calculateCost():
+    #
+    # def buyCoin(symbol, coinNum):
