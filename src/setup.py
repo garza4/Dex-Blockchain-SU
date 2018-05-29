@@ -6,20 +6,20 @@ import network as net
 class CentralBank:
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
-    def __init__(self, freecoins, totalCoins, amount):
+    def __init__(self, freecoins, totalCoins, amount, typeOfCoin):
         # when a centralBank is called the "amount" of coins are made
         self.freecoins = freecoins
         self.totalCoins = totalCoins
         self.amount = amount
         self.coinDict = {}
+        self.typeOfCoin = typeOfCoin
 
-
-    def createCoins(amount, type):
+    def createCoins(amount, typeOfCoin):
         #coins will be a hash
         #have a function to create sequential coins
-        for i in range(0,self.amount):
-            self.coinDict[i] = i % amount #will definitely change this
-            self.freeCoins += 1
+        bank = CentralBank(100000, 100000, amount, typeOfCoin)
+        for i in range(0,bank.amount):
+            bank.coinDict[i] = i % amount #this should be a hash for assigning unique values to coins 
 
     # def freezeCoins(self):
     #     #void a fishy transaction.
@@ -52,22 +52,21 @@ class User:
         self.amountOfCoin = amountOfCoin
         self.privateKey = privateKey #hash privateKey
         self.publicKey = publicKey
-        self.transactions = transactions # transactions will be a list of transactions...........
-        print "created user"
+        self.transactions = [] # transactions will be a list of transactions...........
+        print("created user")
 
     def sendCoin(sender,receiver, amountToSend):
-        if amountToSend > self.amountOfCoin:
-            print "Exceeded amount of coin to send"
+        if amountToSend > sender.amountOfCoin:
+            print ("Exceeded amount of coin to send")
             return False
         else:
-            self.amountOfCoin -= amountToSend
+            sender.amountOfCoin -= amountToSend
             return True
 
     def receiveCoin(receiver, receivingAmount):
-        if Minter.checkForValidTransaction(self,receivingAmount):
-            self.amountOfCoin += receivingAmount
-            return True
-        return False
+        receiver.amountOfCoin += receivingAmount
+        return True
+       
 
 
 

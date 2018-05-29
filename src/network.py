@@ -15,34 +15,40 @@ Questions:
     a good
 
     Used this to hash in scope project thing - https://en.wikipedia.org/wiki/Logistic_map
+    
+    going to need to write a function that can print nodes... shouldn't be too hard
 
 
 """
 
 class Transaction:
 #transactions are nodes so the graph will be made in the transaction class... I think...
-
-    __G = nx.Graph()
-
-
-    def createTransaction(sender, receiver, amount, transactionTime, uniqueID):
+    
+     __lastTransaction = None
+     #history is initialized to be 1000000 big all occupied with none
+     __history = [None] * 1000000
+     __G = nx.Graph()
+     
+     
+    #create transaction will create a node for the two people included in the exchange.
+    #adds a node to the graph and then adds an edge from the last transaction to the most current one.
+     def createTransaction(sender, receiver, amount, transactionTime, uniqueID):
         #createTransaction is really like a createNode function since nodes are transactions
         # in main when createTransaction is called then have a function running passing in float64 numbers between 0 and 1
-
+        
         __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID) #private instance of the node class
-
+        
         sender.sendCoin(sender, amount)
-        receiver.receiveCoin(receiver, amount)
-        sender.transactions.push(__newTransaction)                              #the transaction will be saved to the users account
-        receiver.transactions.push(__newTransaction)                            #the transaction will be saved to the users account
-        G.add_node(__newTransaction)
-        lastEntry = getLastTransaction()                                        #add one node for the sender (__newTransaction)
-        G.add_edge(__newTransaction, lastEntry)                                 #workout a way to get the last node...
-        ledger(uniqueID, __newTransaction)
-
-    __lastTransaction = None
-    __history = {}
-    def ledger(uniqueID, transaction):
+        receiver.receiveCoin(amount)
+        sender.transactions.append(__newTransaction)                              #the transaction will be saved to the users account
+        receiver.transactions.append(__newTransaction)                            #the transaction will be saved to the users account
+        Transaction.__G.add_node(__newTransaction)
+        lastEntry = Transaction.getLastTransaction()                                        #add one node for the sender (__newTransaction)
+        Transaction.__G.add_edge(__newTransaction, lastEntry)                                 #workout a way to get the last node...
+        Transaction.ledger(uniqueID, __newTransaction)
+    
+    #ledger will create a log of all transactions
+     def ledger(uniqueID, transaction):
         """
         the ledger as of right now contains a hash that will store transactions with uniqueID's
         These ID's will be created using randomly generated numbersself. Users will have a history of their
@@ -54,9 +60,12 @@ class Transaction:
 
         Need a hash function here.
         """
-
-        history[uniqueID] = transaction
-        __lastTransaction = history[uniqueID]
-
-    def getLastTransaction():
-        return __lastTransaction
+        Transaction.__history[uniqueID] = transaction
+        Transaction.__lastTransaction = Transaction.__history[uniqueID]
+    
+   #returns the last recorded transaction
+     def getLastTransaction():
+         return Transaction.__lastTransaction
+    
+    
+    
