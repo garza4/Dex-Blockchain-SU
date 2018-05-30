@@ -45,14 +45,19 @@ class Node:
         self.receiver = receiver
         self.timestamp = timestamp
         self.uniqueID = uniqueID
+        self.sender = sender
+    
+    def __str__(self):
+        return str(self.amountExchanged) + " " + self.sender.accountName + " " + self.receiver.accountName
 
 
 class User:
-    def __init__(self, amountOfCoin, privateKey, publicKey, transactions):
+    def __init__(self, accountName, amountOfCoin, privateKey, publicKey, transactions):
         self.amountOfCoin = amountOfCoin
         self.privateKey = privateKey #hash privateKey
         self.publicKey = publicKey
         self.transactions = [] # transactions will be a list of transactions...........
+        self.accountName = accountName
         print("created user")
 
     def sendCoin(sender,receiver, amountToSend):
@@ -66,6 +71,9 @@ class User:
     def receiveCoin(receiver, receivingAmount):
         receiver.amountOfCoin += receivingAmount
         return True
+    
+    def __str__(self):
+        return self.accountName
        
 
 

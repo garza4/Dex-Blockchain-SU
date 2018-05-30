@@ -5,8 +5,11 @@ import network as net
 import networkx as nx
 
 fakeTransactions = {}
-bobby = setup.User(10, 20, 10, fakeTransactions)
-daniel = setup.User(0, 20, 10, fakeTransactions)
-G =nx.Graph()
+bobby = setup.User("bobby", 10, 20, 10, fakeTransactions)
+daniel = setup.User("daniel", 0, 20, 10, fakeTransactions)
 firstNode = net.Transaction.createTransaction(bobby, daniel, 5, 1.00, 501)
+secondNode = net.Transaction.createTransaction(bobby, daniel, 5, 2.00, 502)
+
+print(net.Transaction.G.has_node(firstNode))
+
 
