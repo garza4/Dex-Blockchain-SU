@@ -1,0 +1,8 @@
+# The validator/forger who gets selected has to process and forge a block to the chain
+    validator/forger deposits a certain amount of coins into the network as stake (think of this as a security deposit) (size of stake determined the chances of a validator to be chosen to forge the next block)
+    validator/forger will check if all the transactions within the block are indeed valid.
+    if everything checks out, the validator/forger signs off on the block and adds it to the blockchain.
+    as a reward the validator/forger receives the fees that are associated with each transaction.
+    if validator/forger approve fraudulent transaction, validator/forger will lose a part of their stake (as long as the stake is higher then what the validator gets from the transaction fees, we can trust them to correctly do their job)
+    if a node (all possible validator candidates) stops being a validator, his stake plus all the transaction fees he got will be released back to himself after a certain period of time (not straight away, because the network still needs to be able to punish you, should they discover that some of your blocks where fraudulent)
+    https://www.youtube.com/watch?v=M3EFi_POhps
