@@ -6,20 +6,20 @@ import network as net
 class CentralBank:
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
-    def __init__(self, freecoins, totalCoins, amount, typeOfCoin):
+    def __init__(self, coinInBank):
         # when a centralBank is called the "amount" of coins are made
-        self.freecoins = freecoins
-        self.totalCoins = totalCoins
-        self.amount = amount
-        self.coinDict = {}
-        self.typeOfCoin = typeOfCoin
+        self.dictOfCoins = {}
+        self.typeOfCoin = {}            #this might have to be a dictionary of dictionaries so that at a position all the coins with unique ID numbers can be stored there. Like a probe
+        self.coinInBank = coinInBank
 
-    def createCoins(amount, typeOfCoin):
+    def createCoins(bank, amount, crypto):
         #coins will be a hash
         #have a function to create sequential coins
-        bank = CentralBank(100000, 100000, amount, typeOfCoin)
-        for i in range(0,bank.amount):
-            bank.coinDict[i] = i % amount #this should be a hash for assigning unique values to coins 
+        bank.coinInBank += amount
+        bank.typeOfCoin[crypto] = amount #amount of coins to create
+        bank.dictOfCoins[crypto] = crypto
+        print(bank.typeOfCoin.keys())
+    
 
     # def freezeCoins(self):
     #     #void a fishy transaction.
@@ -32,13 +32,13 @@ class CentralBank:
     # def trackFreeCoins():
     #     #keep track of coins that are currently not being used
     #     return self.freeCoins
-    #
-    # def makeTransaction(desiredAmount, ):
-    #     #whenever someone buys a coin then subtract from freecoins
+    def __str__(self):
+        return str(self.coinInBank)
 
 class Node:
-    #in order for the node class to work with networkx nodes have to be hashable
+    # in order for the node class to work with networkx nodes have to be hashable
     # hash on uniqueID
+    
     def __init__(self, amountExchanged, sender, receiver, timestamp, uniqueID):
 
         self.amountExchanged = amountExchanged
@@ -52,28 +52,37 @@ class Node:
 
 
 class User:
-    def __init__(self, accountName, amountOfCoin, privateKey, publicKey, transactions):
-        self.amountOfCoin = amountOfCoin
+    # in order to account for multiple coins a person can purchase, the amountOfCoin field will 
+    # be a dict where keys are the coin names and at that position will be the amount that user has of that coin.
+    def __init__(self, accountName, privateKey, publicKey):
+        self.amountOfCoin = {} #a dictionary of coins and their amounts
         self.privateKey = privateKey #hash privateKey
         self.publicKey = publicKey
         self.transactions = [] # transactions will be a list of transactions...........
         self.accountName = accountName
         print("created user")
 
-    def sendCoin(sender,receiver, amountToSend):
-        if amountToSend > sender.amountOfCoin:
+    def sendCoin(sender,receiver, amountToSend, typeOfCoin):
+        if sender.amountOfCoin[typeOfCoin] > sender.amountOfCoin[typeOfCoin]:
             print ("Exceeded amount of coin to send")
             return False
         else:
-            sender.amountOfCoin -= amountToSend
+            sender.amountOfCoin[typeOfCoin] -= amountToSend
             return True
 
-    def receiveCoin(receiver, receivingAmount):
-        receiver.amountOfCoin += receivingAmount
+    def receiveCoin(receiver, receivingAmount, typeOfCoin):
+        receiver.amountOfCoin[typeOfCoin] += receivingAmount
         return True
     
+    def purchaseCoins(user, bank, amount, crypto):
+        
+        bank.typeOfCoin[crypto] -= amount #typeOfCoin contains how much of that type of coin is stored in the bank, subtract from bank
+        bank.coinInBank -= amount         #subtract from the total number of coins in the bank
+        user.amountOfCoin[crypto] = amount #user.amountOfCoin shows the user how much of a type of coin they have
+        
+    
     def __str__(self):
-        return self.accountName + " has " + str(self.amountOfCoin) + " pirateCoin " # + " " + ','.join(self.transactions)
+        return self.accountName + " has " + str(self.amountOfCoin)
     
     #^^^^^^^^^^^^be able to print a users transaction history; transactions is a list of nodes ^^^^^^^ 
        

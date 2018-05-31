@@ -25,15 +25,13 @@ class Transaction:
     #The transaction class is where all nodes are going to be made (since nodes are transactions). 
     #createTransaction will be the method to call in order to create a newNode in the graph. 
     
-     __lastTransaction = None
-     #history is initialized to be 1000000 big all occupied with none
-     __history = [None] * 1000000
      G = nx.Graph()
-     def __init__(self, sender, receiever, amount, uniqueID):
+     def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin):
          self.sender = sender
          self.receiver = receiever
          self.amount = amount
          self.uniqueID = uniqueID
+         self.typeOfCoin = typeOfCoin
      
      """
      
@@ -44,28 +42,29 @@ class Transaction:
          
      """
      
-     def createTransaction(sender, receiver, amount, transactionTime, uniqueID):
+     def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
         
         __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID) #private instance of the node class
         
-        sender.sendCoin(sender, amount)
-        receiver.receiveCoin(amount)
+        sender.sendCoin(receiver, amount, typeOfCoin)                         #the first parameter for sendCoin is taken care of by the sender var
+        receiver.receiveCoin(amount, typeOfCoin)
         #here will be a check for fraud
         #if no fraud then append the transaction to sender and receiver
         
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
-        Transaction.G.add_node(__newTransaction)                    #*****************************Need to actually get the last transaction
+        Transaction.G.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
-        Transaction.G.add_edge(__newTransaction, lastEntry)         #workout a way to get the last node...
+        Transaction.G.add_edge(__newTransaction, lastEntry)        
         Transaction.ledger(uniqueID, __newTransaction)
-        print(__newTransaction)
     
-    #ledger will create a log of all transactions
+     #ledger will create a log of all transactions
+     __lastTransaction = None
+     __history = [None] * 1000000 #history is initialized to be 1000000 big all occupied with none
      def ledger(uniqueID, transaction):
         """
         the ledger as of right now contains a hash that will store transactions with uniqueID's
-        These ID's will be created using randomly generated numbersself. Users will have a history of their
+        These ID's will be created using randomly generated numbers. Users will have a history of their
         transactions, but this is not that history. the ledger class can be used to display information for the
         public to see.
 
@@ -76,14 +75,15 @@ class Transaction:
         """
         Transaction.__history[uniqueID] = transaction
         Transaction.__lastTransaction = Transaction.__history[uniqueID]
+        print(transaction) #which is a node
     
     
          #returns the last recorded transaction
      def getLastTransaction():
          return Transaction.__lastTransaction
      
-     def __str__(self):
-         return self.sender + " "  + self.receiver 
+     #def __str__(self):
+         #return self.sender + " "  + self.receiver 
     
     
     
