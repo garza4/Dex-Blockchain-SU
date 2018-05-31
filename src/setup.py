@@ -73,7 +73,9 @@ class User:
         return True
     
     def __str__(self):
-        return self.accountName
+        return self.accountName + " has " + str(self.amountOfCoin) + " pirateCoin " # + " " + ','.join(self.transactions)
+    
+    #^^^^^^^^^^^^be able to print a users transaction history; transactions is a list of nodes ^^^^^^^ 
        
 
 

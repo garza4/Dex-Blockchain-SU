@@ -16,13 +16,14 @@ Questions:
 
     Used this to hash in scope project thing - https://en.wikipedia.org/wiki/Logistic_map
     
-    going to need to write a function that can print nodes... shouldn't be too hard
+   
 
 
 """
 
 class Transaction:
-#transactions are nodes so the graph will be made in the transaction class... I think...
+    #The transaction class is where all nodes are going to be made (since nodes are transactions). 
+    #createTransaction will be the method to call in order to create a newNode in the graph. 
     
      __lastTransaction = None
      #history is initialized to be 1000000 big all occupied with none
@@ -30,25 +31,33 @@ class Transaction:
      G = nx.Graph()
      def __init__(self, sender, receiever, amount, uniqueID):
          self.sender = sender
-         self.receiver = receiver
+         self.receiver = receiever
          self.amount = amount
          self.uniqueID = uniqueID
      
-    #create transaction will create a node for the two people included in the exchange.
-    #adds a node to the graph and then adds an edge from the last transaction to the most current one.
+     """
+     
+         createTransaction is really like a createNode function since nodes are transactions
+         need to find out if the graph is empty before creating the first edge
+         create transaction will create a node for the two people included in the exchange.
+         adds a node to the graph and then adds an edge from the last transaction to the most current one.    
+         
+     """
+     
      def createTransaction(sender, receiver, amount, transactionTime, uniqueID):
-        #createTransaction is really like a createNode function since nodes are transactions
-        # in main when createTransaction is called then have a function running passing in float64 numbers between 0 and 1
-        # need to find out if the graph is empty before creating the first edge
+        
         __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID) #private instance of the node class
         
         sender.sendCoin(sender, amount)
         receiver.receiveCoin(amount)
-        sender.transactions.append(__newTransaction)                              #the transaction will be saved to the users account
-        receiver.transactions.append(__newTransaction)                            #the transaction will be saved to the users account
-        Transaction.G.add_node(__newTransaction)
-        lastEntry = Transaction.getLastTransaction()                                        #add one node for the sender (__newTransaction)
-        Transaction.G.add_edge(__newTransaction, lastEntry)                                 #workout a way to get the last node...
+        #here will be a check for fraud
+        #if no fraud then append the transaction to sender and receiver
+        
+        sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
+        receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
+        Transaction.G.add_node(__newTransaction)                    #*****************************Need to actually get the last transaction
+        lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
+        Transaction.G.add_edge(__newTransaction, lastEntry)         #workout a way to get the last node...
         Transaction.ledger(uniqueID, __newTransaction)
         print(__newTransaction)
     
@@ -74,7 +83,7 @@ class Transaction:
          return Transaction.__lastTransaction
      
      def __str__(self):
-         return self.sender + " "  + self.receiver + " " + ",".join(self.__history)
+         return self.sender + " "  + self.receiver 
     
     
     
