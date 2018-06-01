@@ -93,14 +93,17 @@ class User:
 
 
 class newToken():
+    _cost = None
     #could we call createCoins?
     #maybe a functional call, and then pass total supply and symbol?
     #central bank has to be able to handle new coins... new instance of central bank?
-    def __init__(self, symbol, totalSupply, bank):
+    def __init__(self, symbol, totalSupply, bank, decimalValue):
         self.symbol = symbol #allow for jpeg?
         self.totalSupply = totalSupply
-        _self.bank = CentralBank() #have to check to make sure the syntax is correct, but this should be a private instance of the centralBank in newToken
+        self.bank = CentralBank() #have to check to make sure the syntax is correct, but this should be a private instance of the centralBank in newToken
+                                    #why not just make a dict of newTokens that has the supply and symbol instead of a new centralBank instance for each token?
+        self.value=decimalValue
 
-    # def calculateCost():
-    #
-    # def buyCoin(symbol, coinNum):
+    def calculateCost(totalSupply, decimalValue):
+       _cost= (totalSupply * decimalValue) #cost is calculated by the user defined value for the token compared to Binance Coin multiplied by the total amount, removing that amount of Binance coin and replacing it with the new token
+    # def buyCoin(symbol, coinNum): No buying coins, we can just swap them on the decentralized Exchange when implemented, letting the users define the cost of a coin

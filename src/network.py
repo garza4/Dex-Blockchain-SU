@@ -50,6 +50,8 @@ class Transaction:
         receiver.receiveCoin(amount, typeOfCoin)
         #here will be a check for fraud
         #if no fraud then append the transaction to sender and receiver
+        #if a transaction involves a burned token or frozen token, burn or disregaurd the transacton
+        
         
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
@@ -87,18 +89,22 @@ class Transaction:
          
          
 class Token(Transaction):
-    
+
+    _frozen = false
+    _defrostDate = None;
     def createToken(amount, tokenID, decimalValue):
-        createTransaction(sender, CentralBankAddress, (amount*decimalValue),transactionTime, uniqueID, tokenID)
+        createTransaction(sender, CentralBankAddress, (amount*decimalValue),transactionTime, uniqueID, Coin)
         __newToken()=setup.node(amount, sender, tokenID)
         sender.reciveCoint(amount,tokenID)
-        sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
-        Transaction.G.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
+        sender.transactions.append(__newToken)                #the transaction will be saved to the users account
+        Transaction.G.add_node(__newToken)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
-        Transaction.G.add_edge(__newTransaction, lastEntry)        
-        Transaction.ledger(uniqueID, __newTransaction)
+        Transaction.G.add_edge(__newToken, lastEntry)        
+        Transaction.ledger(uniqueID, __newToken)
     def burnToken(tokenID):
-    
-    def freezeToken(tokenID):
+        createTransaction(sender, CentralBankAddress,amount,transactionTime, uniqueID, tokenID) #send the central bank the burned tokens
+    def freezeToken(tokenID, months):
+        _frozen=true;
+        #_defrostDate= months after freeze.  
     
     
