@@ -3,22 +3,22 @@ import network as net
 
 
 
+
 class CentralBank:
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
     def __init__(self, coinInBank):
         # when a centralBank is called the "amount" of coins are made
         self.dictOfCoins = {}
-        self.typeOfCoin = {}            #this might have to be a dictionary of dictionaries so that at a position all the coins with unique ID numbers can be stored there. Like a probe
+        self.amountOfCoinType = {}            #this might have to be a dictionary of dictionaries so that at a position all the coins with unique ID numbers can be stored there. Like a probe
         self.coinInBank = coinInBank
 
     def createCoins(bank, amount, crypto):
-        #coins will be a hash
-        #have a function to create sequential coins
+        
         bank.coinInBank += amount
-        bank.typeOfCoin[crypto] = amount #amount of coins to create
+        bank.amountOfCoinType[crypto] = amount #amount of coins to create
         bank.dictOfCoins[crypto] = crypto
-        print(bank.typeOfCoin.keys())
+        print(bank.dictOfCoins[crypto])
     
 
     # def freezeCoins(self):
@@ -39,13 +39,14 @@ class Node:
     # in order for the node class to work with networkx nodes have to be hashable
     # hash on uniqueID
     
-    def __init__(self, amountExchanged, sender, receiver, timestamp, uniqueID):
+    def __init__(self, amountExchanged, sender, receiver, timestamp, uniqueID, typeOfCoin):
 
         self.amountExchanged = amountExchanged
         self.receiver = receiver
         self.timestamp = timestamp
         self.uniqueID = uniqueID
         self.sender = sender
+        self.typeOfCoin = typeOfCoin
     
     def __str__(self):
         return str(self.amountExchanged) + " " + self.sender.accountName + " " + self.receiver.accountName
@@ -67,19 +68,42 @@ class User:
             print ("Exceeded amount of coin to send")
             return False
         else:
-            sender.amountOfCoin[typeOfCoin] -= amountToSend
+            temp = sender.amountOfCoin[typeOfCoin]
+            temp -= amountToSend
+            sender.amountOfCoin[typeOfCoin] = temp
             return True
 
     def receiveCoin(receiver, receivingAmount, typeOfCoin):
-        receiver.amountOfCoin[typeOfCoin] += receivingAmount
+        temp = receiver.amountOfCoin[typeOfCoin]
+        temp += receivingAmount
+        #print(receiver.amountOfCoin.keys())
+        receiver.amountOfCoin[typeOfCoin] = temp
         return True
     
     def purchaseCoins(user, bank, amount, crypto):
         
-        bank.typeOfCoin[crypto] -= amount #typeOfCoin contains how much of that type of coin is stored in the bank, subtract from bank
-        bank.coinInBank -= amount         #subtract from the total number of coins in the bank
-        user.amountOfCoin[crypto] = amount #user.amountOfCoin shows the user how much of a type of coin they have
+        """
+        when a purchase from the bank is made by a user, then -
+            the user should gain the crypto they bought & lose the money they used to purchase the crypto
+            the bank should lose the amount the person bought of that particular crypto
+            
+        need to find out if a user has a certain kind of coin, and still need to fix the key error.
+            
+        """
         
+        temp = bank.amountOfCoinType[crypto] #typeOfCoin contains how much of that type of coin is stored in the bank, subtract from bank
+        temp -= amount
+        bank.amountOfCoinType[crypto] = temp
+        bank.coinInBank -= amount
+        if user.amountOfCoin[bank.dictOfCoins[crypto]] == 0:
+            user.amountOfCoin[bank.dictOfCoins[crypto]] = amount
+            
+        else:
+            tempAmount = user.amountOfCoin[crypto]
+            tempAmount += amount
+            user.amountOfCoin[crypto] = tempAmount
+        #store how much of a coin a user has update that amount. Change the dictionary value to refelct the purchase
+        #should also update amount of coin a user has after the purchase.....
     
     def __str__(self):
         return self.accountName + " has " + str(self.amountOfCoin)

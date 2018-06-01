@@ -44,7 +44,7 @@ class Transaction:
      
      def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
         
-        __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID) #private instance of the node class
+        __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
         
         sender.sendCoin(receiver, amount, typeOfCoin)                         #the first parameter for sendCoin is taken care of by the sender var
         receiver.receiveCoin(amount, typeOfCoin)
@@ -57,6 +57,7 @@ class Transaction:
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
         Transaction.G.add_edge(__newTransaction, lastEntry)        
         Transaction.ledger(uniqueID, __newTransaction)
+    
     
      #ledger will create a log of all transactions
      __lastTransaction = None
@@ -85,20 +86,21 @@ class Transaction:
      #def __str__(self):
          #return self.sender + " "  + self.receiver 
          
-         
+"""   
 class Token(Transaction):
     
     def createToken(amount, tokenID, decimalValue):
-        createTransaction(sender, CentralBankAddress, (amount*decimalValue),transactionTime, uniqueID, tokenID)
-        __newToken()=setup.node(amount, sender, tokenID)
+        Transaction.createTransaction(sender, CentralBankAddress, (amount*decimalValue),transactionTime, uniqueID, tokenID)
+        __newToken = setup.Node(amount, sender, tokenID)
         sender.reciveCoint(amount,tokenID)
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         Transaction.G.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
         Transaction.G.add_edge(__newTransaction, lastEntry)        
         Transaction.ledger(uniqueID, __newTransaction)
-    def burnToken(tokenID):
     
-    def freezeToken(tokenID):
+    #def burnToken(tokenID):
     
+    #def freezeToken(tokenID):
+"""
     
