@@ -9,9 +9,8 @@ Currently Using Click for CLI, still figuring it out.
 import click
 
 @click.command()
-@click.Option('--address', default = None, help = 'this is the address that will recive coins' )
-
-@click.Option('--ammount', default = 0, help = 'the ammount to be sent' )
-
+@click.argument('reciver')
+@click.argument('amount')
+@click.Option('--type', '-t',default=BinanceCoin,help = 'Type of Coin or Token to send')
 def transfer(ammount, address):
-        print(ammount + 'sent to ' + address)
+        print(reciver + ' recived' + amount + ' of' + --type)
