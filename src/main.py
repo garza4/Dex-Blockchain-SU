@@ -4,18 +4,21 @@ import network as net
 # import CommandLineWallets as clw
 import networkx as nx
 
+admin = setup.User("bin", 20, 10)
 
 firstSUBank = setup.CentralBank(0)
 firstSUBank.createCoins(1000000, "doge")
 
-print(firstSUBank)
+
+#print(firstSUBank)
 
 bobby = setup.User("garza4", 20, 10)
 daniel = setup.User("merrittD", 20, 10)
 
 bobby.purchaseCoins(firstSUBank, 10, "doge")
+print(bobby)
 
-#firstNode = net.Transaction.createTransaction(bobby, daniel, 5, 1.00, 501, firstSUBank.dictOfCoins['doge'])
+firstNode = net.Transaction.createTransaction(bobby, daniel, 5, 1.00, 501, "doge")
 #secondNode = net.Transaction.createTransaction(bobby, daniel, 5, 2.00, 502, firstSUBank.listOfCoins["doge"])
 
 #print(net.Transaction.G.has_node(firstNode))

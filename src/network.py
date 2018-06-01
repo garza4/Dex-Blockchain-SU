@@ -6,19 +6,14 @@ Questions:
     Directed or undirected graph?
     Does the push and pop work for now?
     Can I save a pop call?
-
     Should the user have added and subtracted self.amount?
     For each transaction should there be a private instance of the user class or is passing setup.User ok since we supposedly know the sender and receiver
-
     ****************************************
     Random number generation for private keys - https://stackoverflow.com/questions/6088077/how-to-get-a-random-number-between-a-float-range?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
     a good
-
     Used this to hash in scope project thing - https://en.wikipedia.org/wiki/Logistic_map
     
    
-
-
 """
 
 class Transaction:
@@ -44,14 +39,12 @@ class Transaction:
      
      def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
         
-        __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID) #private instance of the node class
+        __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
         
         sender.sendCoin(receiver, amount, typeOfCoin)                         #the first parameter for sendCoin is taken care of by the sender var
         receiver.receiveCoin(amount, typeOfCoin)
         #here will be a check for fraud
         #if no fraud then append the transaction to sender and receiver
-        #if a transaction involves a burned token or frozen token, burn or disregaurd the transacton
-        
         
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
@@ -59,6 +52,7 @@ class Transaction:
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
         Transaction.G.add_edge(__newTransaction, lastEntry)        
         Transaction.ledger(uniqueID, __newTransaction)
+    
     
      #ledger will create a log of all transactions
      __lastTransaction = None
@@ -69,10 +63,8 @@ class Transaction:
         These ID's will be created using randomly generated numbers. Users will have a history of their
         transactions, but this is not that history. the ledger class can be used to display information for the
         public to see.
-
         A little unsure what the uniqueID will end up being... a hash of the Users
         privateKey? (probably not the safest thing, but useful for us).
-
         Need a hash function here.
         """
         Transaction.__history[uniqueID] = transaction
@@ -87,24 +79,20 @@ class Transaction:
      #def __str__(self):
          #return self.sender + " "  + self.receiver 
          
-         
+"""   
 class Token(Transaction):
-
-    _frozen = false
-    _defrostDate = None;
+    
     def createToken(amount, tokenID, decimalValue):
-        createTransaction(sender, CentralBankAddress, (amount*decimalValue),transactionTime, uniqueID, Coin)
-        __newToken()=setup.node(amount, sender, tokenID)
+        Transaction.createTransaction(sender, CentralBankAddress, (amount*decimalValue),transactionTime, uniqueID, tokenID)
+        __newToken = setup.Node(amount, sender, tokenID)
         sender.reciveCoint(amount,tokenID)
-        sender.transactions.append(__newToken)                #the transaction will be saved to the users account
-        Transaction.G.add_node(__newToken)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
+        sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
+        Transaction.G.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
-        Transaction.G.add_edge(__newToken, lastEntry)        
-        Transaction.ledger(uniqueID, __newToken)
-    def burnToken(tokenID):
-        createTransaction(sender, CentralBankAddress,amount,transactionTime, uniqueID, tokenID) #send the central bank the burned tokens
-    def freezeToken(tokenID, months):
-        _frozen=true;
-        #_defrostDate= months after freeze.  
+        Transaction.G.add_edge(__newTransaction, lastEntry)        
+        Transaction.ledger(uniqueID, __newTransaction)
     
+    #def burnToken(tokenID):
     
+    #def freezeToken(tokenID):
+"""
