@@ -4,6 +4,7 @@ import network as net
 
 
 
+
 class CentralBank:
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
@@ -61,6 +62,7 @@ class User:
         self.publicKey = publicKey
         self.transactions = [] # transactions will be a list of transactions...........
         self.accountName = accountName
+        self.alerts = ""
         print("created user")
 
     def sendCoin(sender,receiver, amountToSend, typeOfCoin):
@@ -110,7 +112,11 @@ class User:
     
     #^^^^^^^^^^^^be able to print a users transaction history; transactions is a list of nodes ^^^^^^^ 
        
-
+    
+    #with this method there will also have to be a check  alerts method of somesort.
+    def sendMessage(user, message):
+        user.alerts = message
+        
 
 
 
