@@ -76,11 +76,17 @@ class User:
             return True
 
     def receiveCoin(receiver, receivingAmount, typeOfCoin):
-        temp = receiver.amountOfCoin[typeOfCoin]
-        temp += receivingAmount
-        #print(receiver.amountOfCoin.keys())
-        receiver.amountOfCoin[typeOfCoin] = temp
-        return True
+        if typeOfCoin not in receiver.amountOfCoin.keys():
+            receiver.amountOfCoin[typeOfCoin] = receivingAmount
+            print("there was no " + typeOfCoin)
+            
+            return True
+        else:    
+            temp = receiver.amountOfCoin[typeOfCoin]
+            temp += receivingAmount
+            receiver.amountOfCoin[typeOfCoin] = temp
+            return True
+        return False
     
     def purchaseCoins(user, bank, amount, crypto):
         
@@ -95,10 +101,19 @@ class User:
         
         temp = bank.amountOfCoinType[crypto] #typeOfCoin contains how much of that type of coin is stored in the bank, subtract from bank
         temp -= amount
+        print("the amount of coin is " +  " " + str(temp))
         bank.amountOfCoinType[crypto] = temp
+        print("the bank now has " + str(bank.amountOfCoinType[crypto]) + " " + "coin in the bank")
         bank.coinInBank -= amount
-        if user.amountOfCoin[bank.dictOfCoins[crypto]] == 0:
-            user.amountOfCoin[bank.dictOfCoins[crypto]] = amount
+        print("I am trying to purchase " + crypto)
+        print(user.amountOfCoin.keys())
+        if not user.amountOfCoin.keys():
+            user.amountOfCoin[crypto] = 0
+        print(user.amountOfCoin.keys())
+    
+        if user.amountOfCoin[crypto] == 0:
+            user.amountOfCoin[crypto] = amount
+            print(str(user.amountOfCoin[crypto]) + " users purchase" )
             
         else:
             tempAmount = user.amountOfCoin[crypto]
