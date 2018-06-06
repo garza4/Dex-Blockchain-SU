@@ -66,7 +66,7 @@ class User:
         print("created user")
 
     def sendCoin(sender,receiver, amountToSend, typeOfCoin):
-        if sender.amountOfCoin[typeOfCoin] > sender.amountOfCoin[typeOfCoin]:
+        if amountToSend > sender.amountOfCoin[typeOfCoin]:
             print ("Exceeded amount of coin to send")
             return False
         else:
@@ -101,19 +101,19 @@ class User:
         
         temp = bank.amountOfCoinType[crypto] #typeOfCoin contains how much of that type of coin is stored in the bank, subtract from bank
         temp -= amount
-        print("the amount of coin is " +  " " + str(temp))
+        #print("the amount of coin is " +  " " + str(temp))
         bank.amountOfCoinType[crypto] = temp
-        print("the bank now has " + str(bank.amountOfCoinType[crypto]) + " " + "coin in the bank")
+        #print("the bank now has " + str(bank.amountOfCoinType[crypto]) + " " + "coin in the bank")
         bank.coinInBank -= amount
-        print("I am trying to purchase " + crypto)
-        print(user.amountOfCoin.keys())
+        #print("I am trying to purchase " + crypto)
+        #print(user.amountOfCoin.keys())
         if not user.amountOfCoin.keys():
             user.amountOfCoin[crypto] = 0
-        print(user.amountOfCoin.keys())
+        #print(user.amountOfCoin.keys())
     
         if user.amountOfCoin[crypto] == 0:
             user.amountOfCoin[crypto] = amount
-            print(str(user.amountOfCoin[crypto]) + " users purchase" )
+            #print(str(user.amountOfCoin[crypto]) + " users purchase" )
             
         else:
             tempAmount = user.amountOfCoin[crypto]

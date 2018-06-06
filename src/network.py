@@ -13,6 +13,13 @@ Questions:
     a good
     Used this to hash in scope project thing - https://en.wikipedia.org/wiki/Logistic_map
     
+    
+    
+    
+    Also need to create a way to start splitting graphs in blocks. 
+    
+    python webserver information - https://docs.python.org/2/library/cgi.html
+    
    
 """
 
