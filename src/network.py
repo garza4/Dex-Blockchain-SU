@@ -27,7 +27,7 @@ class Transaction:
     #The transaction class is where all nodes are going to be made (since nodes are transactions). 
     #createTransaction will be the method to call in order to create a newNode in the graph. 
     
-     G = nx.Graph()
+     memPool = nx.Graph()
      def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin):
          self.sender = sender
          self.receiver = receiever
@@ -55,10 +55,23 @@ class Transaction:
         
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
-        Transaction.G.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
+        Transaction.memPool.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
-        Transaction.G.add_edge(__newTransaction, lastEntry)        
+        Transaction.memPool.add_edge(__newTransaction, lastEntry)        
         Transaction.ledger(uniqueID, __newTransaction)
+        
+    """
+    the memPool can be the graph G. 
+    We will have a function that goes through G and verifies transactions and once a transaction has been verified it will be added to the 
+    actual graph. 
+    The function will take a graph and verify nodes which are transactions
+    Found a way that could make this process easy - https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.Graph.nodes.html
+    .data returns an nlist of nodes which we can then use to verify transactions. 
+    
+    
+    Need to start thinking about threadSafe code so that if our code is running on the cloud nothing gets messed up
+    Research Locks and such 
+    """
     
     
      #ledger will create a log of all transactions

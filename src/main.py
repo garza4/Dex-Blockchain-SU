@@ -3,6 +3,7 @@ import network as net
 # import ConsensusAlgorithm as ca
 # import CommandLineWallets as clw
 import networkx as nx
+import time
 
 
 firstSUBank = setup.CentralBank(0)
@@ -21,9 +22,9 @@ bobby.purchaseCoins(firstSUBank, 10, "doge")
 
 print(bobby)
 
-firstNode = net.Transaction.createTransaction(bobby, daniel, 5, 1.00, 501, "doge")
-secondNode = net.Transaction.createTransaction(bobby, daniel, 5, 2.00, 502, "doge")
-thirdNode = net.Transaction.createTransaction(alexander, daniel, 1000, 1.00, 503, "garlicCoin")
+firstNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 501, "doge")
+secondNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 502, "doge")
+thirdNode = net.Transaction.createTransaction(alexander, daniel, 1000, time.time(), 503, "garlicCoin")
 
 #print(net.Transaction.G.has_node(firstNode))
 print(bobby)
