@@ -1,5 +1,5 @@
 import setup
-import network as net
+import network  as net
 # import ConsensusAlgorithm as ca
 # import CommandLineWallets as clw
 import networkx as nx
@@ -30,6 +30,9 @@ thirdNode = net.Transaction.createTransaction(alexander, daniel, 1000, time.time
 print(bobby)
 print(daniel)
 print(alexander)
+
+net.Transaction.validateTransactions()
+
 
 
 """

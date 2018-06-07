@@ -19,7 +19,7 @@ class CentralBank:
         bank.coinInBank += amount
         bank.amountOfCoinType[crypto] = amount #amount of coins to create
         bank.dictOfCoins[crypto] = crypto
-        print(bank.dictOfCoins[crypto])
+        #print(bank.dictOfCoins[crypto])
     
 
     # def freezeCoins(self):
@@ -63,7 +63,7 @@ class User:
         self.transactions = [] # transactions will be a list of transactions...........
         self.accountName = accountName
         self.alerts = ""
-        print("created user")
+        #print("created user")
 
     def sendCoin(sender,receiver, amountToSend, typeOfCoin):
         if amountToSend > sender.amountOfCoin[typeOfCoin]:
@@ -78,7 +78,7 @@ class User:
     def receiveCoin(receiver, receivingAmount, typeOfCoin):
         if typeOfCoin not in receiver.amountOfCoin.keys():
             receiver.amountOfCoin[typeOfCoin] = receivingAmount
-            print("there was no " + typeOfCoin)
+            #print("there was no " + typeOfCoin)
             
             return True
         else:    

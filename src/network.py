@@ -44,6 +44,8 @@ class Transaction:
          
      """
      
+     
+     
      def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
         
         __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
@@ -55,28 +57,33 @@ class Transaction:
         
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
-        Transaction.memPool.add_node(__newTransaction)                    #the last transaction is updated whenever a transaction is made by calling the ledger method. 
+        Transaction.memPool.add_node(__newTransaction)              #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
         Transaction.memPool.add_edge(__newTransaction, lastEntry)        
         Transaction.ledger(uniqueID, __newTransaction)
         
-    """
-    the memPool can be the graph G. 
-    We will have a function that goes through G and verifies transactions and once a transaction has been verified it will be added to the 
-    actual graph. 
-    The function will take a graph and verify nodes which are transactions
-    Found a way that could make this process easy - https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.Graph.nodes.html
-    .data returns an nlist of nodes which we can then use to verify transactions. 
+        """
+        the memPool can be the graph G. 
+        We will have a function that goes through G and verifies transactions and once a transaction has been verified it will be added to the 
+        actual graph. 
+        The function will take a graph and verify nodes which are transactions
+        Found a way that could make this process easy - https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.Graph.nodes.html
+        .data returns an nlist of nodes which we can then use to verify transactions. 
+        
     
-    
-    Need to start thinking about threadSafe code so that if our code is running on the cloud nothing gets messed up
-    Research Locks and such 
-    """
+        Need to start thinking about threadSafe code so that if our code is running on the cloud nothing gets messed up
+        Research Locks and such 
+        """
+     def validateTransactions():
+         listOfNodes = Transaction.memPool.nodes(data=True)
+         print(listOfNodes)
+             
     
     
      #ledger will create a log of all transactions
      __lastTransaction = None
      __history = [None] * 1000000 #history is initialized to be 1000000 big all occupied with none
+     
      def ledger(uniqueID, transaction):
         """
         the ledger as of right now contains a hash that will store transactions with uniqueID's
