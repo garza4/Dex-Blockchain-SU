@@ -38,7 +38,10 @@ net.Transaction.validateTransactions()
 """
 Bobby buys 10 doge coins and wants to send 5 to daniel in two different transactions, so by the end Bobby will have 0 doge coin
 
+for the command line interface do commands work by linking key phrases to functions? 
 
 """
+
+
 
 

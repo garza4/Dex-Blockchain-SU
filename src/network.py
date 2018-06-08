@@ -1,24 +1,19 @@
 import networkx as nx
 import setup as setup
 
+
 """
-Questions:
-    Directed or undirected graph?
-    Does the push and pop work for now?
-    Can I save a pop call?
-    Should the user have added and subtracted self.amount?
-    For each transaction should there be a private instance of the user class or is passing setup.User ok since we supposedly know the sender and receiver
+
     ****************************************
     Random number generation for private keys - https://stackoverflow.com/questions/6088077/how-to-get-a-random-number-between-a-float-range?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
     a good
     Used this to hash in scope project thing - https://en.wikipedia.org/wiki/Logistic_map
     
-    
-    
-    
     Also need to create a way to start splitting graphs in blocks. 
     
     python webserver information - https://docs.python.org/2/library/cgi.html
+    
+    python thread locks - https://docs.python.org/3/library/threading.html#lock-objects
     
    
 """
@@ -72,7 +67,7 @@ class Transaction:
         
     
         Need to start thinking about threadSafe code so that if our code is running on the cloud nothing gets messed up
-        Research Locks and such 
+        Research Locks and such for python
         """
      def validateTransactions():
          listOfNodes = Transaction.memPool.nodes(data=True)

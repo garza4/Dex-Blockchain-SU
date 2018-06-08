@@ -30,9 +30,7 @@ class CentralBank:
     #     #instead of burning send to an unreachable address that that only admin
     #     #can get to
     #
-    # def trackFreeCoins():
-    #     #keep track of coins that are currently not being used
-    #     return self.freeCoins
+  
     def __str__(self):
         return str(self.coinInBank)
 
@@ -78,14 +76,14 @@ class User:
     def receiveCoin(receiver, receivingAmount, typeOfCoin):
         if typeOfCoin not in receiver.amountOfCoin.keys():
             receiver.amountOfCoin[typeOfCoin] = receivingAmount
-            #print("there was no " + typeOfCoin)
-            
             return True
+        
         else:    
             temp = receiver.amountOfCoin[typeOfCoin]
             temp += receivingAmount
             receiver.amountOfCoin[typeOfCoin] = temp
             return True
+        print("is this spot always reached?")
         return False
     
     def purchaseCoins(user, bank, amount, crypto):
