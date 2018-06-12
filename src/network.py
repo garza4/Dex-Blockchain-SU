@@ -43,7 +43,9 @@ class Transaction:
      
      def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
         
-        __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
+       # __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
+        __newTransaction = Transaction(receiver, amount, transactionTime, uniqueID, typeOfCoin) 
+        #print(__newTransaction)
         
         sender.sendCoin(receiver, amount, typeOfCoin)                         #the first parameter for sendCoin is taken care of by the sender var
         receiver.receiveCoin(amount, typeOfCoin)
@@ -71,7 +73,9 @@ class Transaction:
         """
      def validateTransactions():
          listOfNodes = Transaction.memPool.nodes(data=True)
-         print(listOfNodes)
+         for i in range(len(listOfNodes)):
+             print(listOfNodes[i])
+             
              
     
     
@@ -98,8 +102,8 @@ class Transaction:
      def getLastTransaction():
          return Transaction.__lastTransaction
      
-     #def __str__(self):
-         #return self.sender + " "  + self.receiver 
+     def __str__(self):
+         return str(self.sender) + " " + str(self.receiver) + " " + str(self.uniqueID)
          
 """   
 class Token(Transaction):

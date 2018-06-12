@@ -20,7 +20,7 @@ alexander = setup.User("germany", 20, 10)
 alexander.purchaseCoins(firstSUBank, 2000, "garlicCoin")
 bobby.purchaseCoins(firstSUBank, 10, "doge")
 
-print(bobby)
+#print(bobby)
 
 firstNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 501, "doge")
 secondNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 502, "doge")
@@ -31,7 +31,8 @@ print(bobby)
 print(daniel)
 print(alexander)
 
-net.Transaction.validateTransactions()
+#net.Transaction.validateTransactions()
+#print(firstNode)
 
 
 
