@@ -33,7 +33,7 @@ class CentralBank:
   
     def __str__(self):
         return str(self.coinInBank)
-
+"""
 class Node:
     # in order for the node class to work with networkx nodes have to be hashable
     # hash on uniqueID
@@ -49,7 +49,7 @@ class Node:
     
     def __str__(self):
         return str(self.amountExchanged) + " " + self.sender.accountName + " " + self.receiver.accountName
-
+"""
 
 class User:
     # in order to account for multiple coins a person can purchase, the amountOfCoin field will 

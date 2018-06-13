@@ -5,6 +5,19 @@ import network  as net
 import networkx as nx
 import time
 
+"""
+TODO:
+    *need to implement a uniqueID generator
+    *implment transaction validation of the mempool
+    *create blocks - when to split/link more graphs (how to do with hashing?)
+    *Research Merkle Tree - possible answer to hashing
+    *work on GCS
+    
+    
+    
+    
+"""
+
 
 firstSUBank = setup.CentralBank(0)
 firstSUBank.createCoins(1000000, "doge")
@@ -40,6 +53,7 @@ print(alexander)
 Bobby buys 10 doge coins and wants to send 5 to daniel in two different transactions, so by the end Bobby will have 0 doge coin
 
 for the command line interface do commands work by linking key phrases to functions? 
+
 
 """
 

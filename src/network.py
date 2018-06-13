@@ -23,7 +23,7 @@ class Transaction:
     #createTransaction will be the method to call in order to create a newNode in the graph. 
     
      memPool = nx.Graph()
-     def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin):
+     def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin, timestamp):
          self.sender = sender
          self.receiver = receiever
          self.amount = amount
@@ -44,7 +44,7 @@ class Transaction:
      def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
         
        # __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
-        __newTransaction = Transaction(receiver, amount, transactionTime, uniqueID, typeOfCoin) 
+        __newTransaction = Transaction(sender,receiver, amount, transactionTime, uniqueID, typeOfCoin) 
         #print(__newTransaction)
         
         sender.sendCoin(receiver, amount, typeOfCoin)                         #the first parameter for sendCoin is taken care of by the sender var
@@ -74,7 +74,7 @@ class Transaction:
      def validateTransactions():
          listOfNodes = Transaction.memPool.nodes(data=True)
          for i in range(len(listOfNodes)):
-             print(listOfNodes[i])
+             print(listOfNodes[i])  #here we will be able to access the nodes in the graph and validate that there was a legal transaction
              
              
     
@@ -95,7 +95,12 @@ class Transaction:
         """
         Transaction.__history[uniqueID] = transaction
         Transaction.__lastTransaction = Transaction.__history[uniqueID]
-        print(transaction) #which is a node
+        #print(transaction) #which is a node
+        f = open("ledger.txt", "w+")
+        f.write(str(Transaction.__lastTransaction)) 
+        #save last transaction that occured to a file. However, only one thing is written at a time. 
+        #on a running application every time there is a transaction it will be posted to the site. 
+        f.close()
     
     
          #returns the last recorded transaction

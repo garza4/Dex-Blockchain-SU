@@ -1,0 +1,1 @@
+germany has {'garlicCoin': 1000} merrittD has {'doge': 10, 'garlicCoin': 1000} 1528849733.4241102
