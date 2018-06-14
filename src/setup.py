@@ -60,7 +60,7 @@ class User:
         self.publicKey = publicKey
         self.transactions = [] # transactions will be a list of transactions...........
         self.accountName = accountName
-        self.alerts = ""
+        self.alerts = []
         #print("created user")
 
     def sendCoin(sender,receiver, amountToSend, typeOfCoin):
