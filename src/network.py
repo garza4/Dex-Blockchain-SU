@@ -81,7 +81,8 @@ class Transaction:
      def __repr__(self):
          return str(self)
     
-        
+        #call when we want to the validate the mempool
+  
      def validateTransactions():
          listOfNodes = Transaction.memPool.nodes(data=False)
          print(listOfNodes)

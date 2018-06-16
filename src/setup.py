@@ -1,5 +1,7 @@
 import hashlib as hlib
 import network as net
+import ConsensusAlgorithm as cA
+import datetime
 
 
 
@@ -8,18 +10,42 @@ import network as net
 class CentralBank:
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
+    is_running = False
     def __init__(self, coinInBank):
         # when a centralBank is called the "amount" of coins are made
         self.dictOfCoins = {}
         self.amountOfCoinType = {}            #this might have to be a dictionary of dictionaries so that at a position all the coins with unique ID numbers can be stored there. Like a probe
         self.coinInBank = coinInBank
-
+        self.listOfUsers = []                 #uniqueID's
+        #need to be able to get a user from knowing their uniqueID
     def createCoins(bank, amount, crypto):
-        
         bank.coinInBank += amount
         bank.amountOfCoinType[crypto] = amount #amount of coins to create
         bank.dictOfCoins[crypto] = crypto
-        #print(bank.dictOfCoins[crypto])
+        #is_running = True
+    
+    """
+    at the start of the day (if the class is called) pick forgers 
+    
+    while is_running:
+        #need to figure out how to start looking for forgers using time
+        start_of_day = datetime.datetime(8, 0, 0, 0)
+        plus_one = datetime.datetime(8, 0, 59, 0)
+        delta = plus_one - start_of_day
+        
+        if datetime.time() == 
+            list_of_holders = cA.chooseStakeHolders(20):
+            prime_stake = list_of_holders[0] 
+            primeStake will be a privateKey for that user
+                for holders in list_of_holders:
+                    user = getUser(holders_privateKey) - returns user instance
+                    user.alerts.append("you have been chosen as a stake holder")
+                    #find a way to display if they are a forger. 
+                    
+                    One forger, but notify all that were chosen. 
+        
+    """    
+        
     
 
     # def freezeCoins(self):
@@ -92,6 +118,14 @@ class User:
         print("is this spot always reached?")
         return False
     
+    #the only acceptable coin for stake is bnb
+    def put_up_stake(self,ID, amount):
+        if self.amountOfCoin["bnb"] < amount:
+                return False
+        else:
+            cA.Stake.addStake(ID, amount) #might need self
+        return True    
+        
     def purchaseCoins(user, bank, amount, crypto):
         
         """

@@ -4,6 +4,7 @@ import network  as net
 # import CommandLineWallets as clw
 import networkx as nx
 import time
+import ConsensusAlgorithm as cA
 
 """
 TODO:
@@ -17,6 +18,9 @@ TODO:
     
     
 """
+
+
+
 
 
 firstSUBank = setup.CentralBank(0)
@@ -33,7 +37,7 @@ alexander = setup.User("germany", 20)
 alexander.purchaseCoins(firstSUBank, 2000, "garlicCoin")
 bobby.purchaseCoins(firstSUBank, 10, "doge")
 
-#print(bobby)
+#bobby.put_up_stake(bobby.privateKey, 20)
 
 firstNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 501, "doge")
 secondNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 502, "doge")
