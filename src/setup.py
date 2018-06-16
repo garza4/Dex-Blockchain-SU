@@ -54,14 +54,20 @@ class Node:
 class User:
     # in order to account for multiple coins a person can purchase, the amountOfCoin field will 
     # be a dict where keys are the coin names and at that position will be the amount that user has of that coin.
-    def __init__(self, accountName, privateKey, publicKey):
+    def __init__(self, accountName, privateKey):
+        #removed publicKey because it was weird to work with in network
         self.amountOfCoin = {} #a dictionary of coins and their amounts
         self.privateKey = privateKey #hash privateKey
-        self.publicKey = publicKey
+        #self.publicKey = publicKey
         self.transactions = [] # transactions will be a list of transactions...........
         self.accountName = accountName
         self.alerts = []
         #print("created user")
+        
+        
+    #don't call except when validating memPool...     
+    def __getUniqueID(user):
+        return user.privateKey
 
     def sendCoin(sender,receiver, amountToSend, typeOfCoin):
         if amountToSend > sender.amountOfCoin[typeOfCoin]:

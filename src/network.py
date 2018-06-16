@@ -23,6 +23,7 @@ class Transaction:
     #createTransaction will be the method to call in order to create a newNode in the graph. 
     
      memPool = nx.Graph()
+     
      def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin, timestamp):
          self.sender = sender
          self.receiver = receiever
@@ -30,8 +31,9 @@ class Transaction:
          self.uniqueID = uniqueID
          self.typeOfCoin = typeOfCoin
      
+    
+    
      """
-     
          createTransaction is really like a createNode function since nodes are transactions
          need to find out if the graph is empty before creating the first edge
          create transaction will create a node for the two people included in the exchange.
@@ -55,10 +57,10 @@ class Transaction:
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
         Transaction.memPool.add_node(__newTransaction)              #the last transaction is updated whenever a transaction is made by calling the ledger method. 
-        lastEntry = Transaction.getLastTransaction()                #add one node for the sender (__newTransaction)
+        lastEntry = Transaction.ledger(uniqueID, __newTransaction)  #add one node for the sender (__newTransaction)
         Transaction.memPool.add_edge(__newTransaction, lastEntry)        
-        Transaction.ledger(uniqueID, __newTransaction)
-        
+        #in order to receive the latest transactions call ledger with uniqueID and a new transaction...
+        #for example - last_transaction = ledger(uniqueID, new_transaction)        
         """
         the memPool can be the graph G. 
         We will have a function that goes through G and verifies transactions and once a transaction has been verified it will be added to the 
@@ -71,11 +73,24 @@ class Transaction:
         Need to start thinking about threadSafe code so that if our code is running on the cloud nothing gets messed up
         Research Locks and such for python
         """
+     
+     def __str__(self):
+         return str(self.sender) + " " + str(self.uniqueID) 
+         #str(self.sender) + " " + str(self.receiver) + " " + str(self.uniqueID)   
+         
+     def __repr__(self):
+         return str(self)
+    
+        
      def validateTransactions():
-         listOfNodes = Transaction.memPool.nodes(data=True)
-         for i in range(len(listOfNodes)):
-             print(listOfNodes[i])  #here we will be able to access the nodes in the graph and validate that there was a legal transaction
-             
+         listOfNodes = Transaction.memPool.nodes(data=False)
+         print(listOfNodes)
+         #for nodes in listOfNodes:
+         #   print(str(nodes))  #here we will be able to access the nodes in the graph and validate that there was a legal transaction
+         #reversed will start iterating from the last added node
+         for nodes in reversed(listOfNodes):
+               #I have no idea why the uniqueID's are all 1529115084.2049956
+               print(nodes.uniqueID)
              
     
     
@@ -96,19 +111,14 @@ class Transaction:
         Transaction.__history[uniqueID] = transaction
         Transaction.__lastTransaction = Transaction.__history[uniqueID]
         #print(transaction) #which is a node
-        f = open("ledger.txt", "w+")
-        f.write(str(Transaction.__lastTransaction)) 
-        #save last transaction that occured to a file. However, only one thing is written at a time. 
-        #on a running application every time there is a transaction it will be posted to the site. 
-        f.close()
+        return Transaction.__lastTransaction
     
     
          #returns the last recorded transaction
      def getLastTransaction():
          return Transaction.__lastTransaction
      
-     def __str__(self):
-         return str(self.sender) + " " + str(self.receiver) + " " + str(self.uniqueID)
+     
          
 """   
 class Token(Transaction):

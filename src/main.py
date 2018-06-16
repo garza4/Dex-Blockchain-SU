@@ -26,9 +26,9 @@ firstSUBank.createCoins(1000000, "garlicCoin")
 
 #print(firstSUBank)
 
-bobby = setup.User("garza4", 20, 10)
-daniel = setup.User("merrittD", 20, 10)
-alexander = setup.User("germany", 20, 10)
+bobby = setup.User("garza4", 20)
+daniel = setup.User("merrittD", 20)
+alexander = setup.User("germany", 20)
 
 alexander.purchaseCoins(firstSUBank, 2000, "garlicCoin")
 bobby.purchaseCoins(firstSUBank, 10, "doge")
@@ -40,11 +40,11 @@ secondNode = net.Transaction.createTransaction(bobby, daniel, 5, time.time(), 50
 thirdNode = net.Transaction.createTransaction(alexander, daniel, 1000, time.time(), 503, "garlicCoin")
 
 #print(net.Transaction.G.has_node(firstNode))
-print(bobby)
-print(daniel)
-print(alexander)
+#print(bobby)
+#print(daniel)
+#print(alexander)
 
-#net.Transaction.validateTransactions()
+net.Transaction.validateTransactions()
 #print(firstNode)
 
 
