@@ -4,15 +4,17 @@ Created on Sat Jun 16 10:14:24 2018
 
 @author: Daniel
 """
-
 import click
 
-@click.group()
+@click.group('receiver','amount','coinType')
 def cli1():
     pass
 
 @cli1.command()
-def Send():
+@click.argument('receiver')
+@click.argument('amount')
+@click.argument('coinType')
+def Send(receiver,amount,coinType):
     """Send Currency"""
 
 @click.group()
