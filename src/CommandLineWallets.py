@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sat Jun 16 10:14:24 2018
 
 @author: Daniel
 """
+
 import click
 
-@click.group('receiver','amount','coinType')
+@click.group()
 def cli1():
     pass
 
@@ -22,7 +22,9 @@ def cli2():
     pass
 
 @cli2.command()
-def CreateToken():
+@click.argument('symbol')
+@click.argument('totalSupply')
+def CreateToken(symbol, totalSupply):
     """Create New Token"""
 
 @click.group()
@@ -30,7 +32,8 @@ def cli3():
     pass
 
 @cli3.command()
-def Fire():
+@click.argument('amount')
+def Fire(amount):
     """Delete Currency From Circulation"""
 
 @click.group()
@@ -38,7 +41,8 @@ def cli4():
     pass
 
 @cli4.command()
-def Freeze():
+@click.argument('amount')
+def Freeze(amount):
     """Freeze Tokens"""
     
 @click.group()
@@ -46,7 +50,8 @@ def cli5():
     pass
 
 @cli5.command()
-def PlaceStake():
+@click.argument('amount')
+def PlaceStake(amount):
     """Place A Stake For Minting"""
 
 @click.group()
@@ -54,6 +59,7 @@ def cli6():
     pass
 
 @cli6.command()
+@click.argument('amount')
 def RemoveStake():
     """Remove Current Stake For Minting"""
 
