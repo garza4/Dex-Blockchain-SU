@@ -1,16 +1,61 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri May 25 20:44:42 2018
-
-Currently Using Click for CLI, still figuring it out.
+Created on Sat Jun 16 10:14:24 2018
 
 @author: Daniel
 """
+
 import click
 
-@click.command()
-@click.argument('reciver')
-@click.argument('amount')
-@click.Option('--type', '-t',default=BinanceCoin,help = 'Type of Coin or Token to send')
-def transfer(ammount, address):
-        print(reciver + ' recived' + amount + ' of' + --type)
+@click.group()
+def cli1():
+    pass
+
+@cli1.command()
+def Send():
+    """Send Currency"""
+
+@click.group()
+def cli2():
+    pass
+
+@cli2.command()
+def CreateToken():
+    """Create New Token"""
+
+@click.group()
+def cli3():
+    pass
+
+@cli3.command()
+def Fire():
+    """Delete Currency From Circulation"""
+
+@click.group()
+def cli4():
+    pass
+
+@cli4.command()
+def Freeze():
+    """Freeze Tokens"""
+    
+@click.group()
+def cli5():
+    pass
+
+@cli5.command()
+def PlaceStake():
+    """Place A Stake For Minting"""
+
+@click.group()
+def cli6():
+    pass
+
+@cli6.command()
+def RemoveStake():
+    """Remove Current Stake For Minting"""
+
+cli = click.CommandCollection(sources=[cli1, cli2,cli3,cli4,cli5,cli6])
+
+if __name__ == '__main__':
+    cli()
