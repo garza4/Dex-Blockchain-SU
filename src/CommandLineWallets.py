@@ -62,8 +62,16 @@ def cli6():
 @click.argument('amount')
 def RemoveStake():
     """Remove Current Stake For Minting"""
+    
+@click.group()
+def cli7():
+    pass
 
-cli = click.CommandCollection(sources=[cli1, cli2,cli3,cli4,cli5,cli6])
+@cli7.command()
+def checkstake():
+    """Tells user if they have stake"""
+
+cli = click.CommandCollection(sources=[cli1, cli2,cli3,cli4,cli5,cli6,cli7])
 
 if __name__ == '__main__':
     cli()
