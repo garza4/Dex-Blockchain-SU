@@ -26,10 +26,35 @@ class CentralBank:
     
     """
     at the start of the day (if the class is called) pick forgers 
-    
+    """
     while is_running:
         #need to figure out how to start looking for forgers using time
-        start_of_day = datetime.datetime(8, 0, 0, 0)
+        start_of_day = datetime.datetime(8, 0, 0, 0) #8:00:00:00 AM
+        currTime = datetime.time.now()
+        
+        if (currTime.hour - start_of_day.hour) == 0: #The current time is between 8 and 9 am
+            if (currTime.minute - start_of_day.minute) == 0: # The current time is between 8 and 8:01 am
+                if (currTime.second - start_of_day.second) == 0: #The current time is between 8 and 8:00:01 am
+                    list_of_holders = cA.chooseStakeHolders(20)
+                    prime_stake = list_of_holders[0] 
+                    #primeStake will be a privateKey for that user
+                    """
+                    The value for 'holders' can either be userID or user's private key depending on which unique value
+                    we pass to the addStake method in ConsensusAlgorithm.py
+                    As of now, it is userID. 
+                    Maybe we can send the message based on userID?
+                    
+                    for holders in list_of_holders:
+                        user = getUser(holders_privateKey) # returns user instance
+                        user.alerts.append("you have been chosen as a stake holder")
+                        #find a way to display if they are a forger. 
+                        
+                        #One forger, but notify all that were chosen.
+                    """
+                
+        
+        """
+        What we coded together
         plus_one = datetime.datetime(8, 0, 59, 0)
         delta = plus_one - start_of_day
         
@@ -44,7 +69,7 @@ class CentralBank:
                     
                     One forger, but notify all that were chosen. 
         
-    """    
+        """
         
     
 
