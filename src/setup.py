@@ -47,9 +47,12 @@ class CentralBank:
                     for holders in list_of_holders:
                         user = getUser(holders_privateKey) # returns user instance
                         user.alerts.append("you have been chosen as a stake holder")
-                        #find a way to display if they are a forger. 
-                        
+                        #find a way to display if they are a forger.                         
                         #One forger, but notify all that were chosen.
+                        
+                        
+                    ******** to show this we can open windows for all those users... In our case if there were 12 candidates then 
+                                12 windows would open with a message and maybe the users name as the title of the window. 
                     """
 
         # Continuously checks for forgers who have waited 30 to have their stake released
@@ -78,11 +81,8 @@ class CentralBank:
                     #find a way to display if they are a forger. 
                     
                     One forger, but notify all that were chosen. 
-        
         """
         
-    
-
     # def freezeCoins(self):
     #     #void a fishy transaction.
     #
@@ -94,23 +94,7 @@ class CentralBank:
   
     def __str__(self):
         return str(self.coinInBank)
-"""
-class Node:
-    # in order for the node class to work with networkx nodes have to be hashable
-    # hash on uniqueID
-    
-    def __init__(self, amountExchanged, sender, receiver, timestamp, uniqueID, typeOfCoin):
 
-        self.amountExchanged = amountExchanged
-        self.receiver = receiver
-        self.timestamp = timestamp
-        self.uniqueID = uniqueID
-        self.sender = sender
-        self.typeOfCoin = typeOfCoin
-    
-    def __str__(self):
-        return str(self.amountExchanged) + " " + self.sender.accountName + " " + self.receiver.accountName
-"""
 
 class User:
     # in order to account for multiple coins a person can purchase, the amountOfCoin field will 

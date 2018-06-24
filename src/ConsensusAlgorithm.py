@@ -18,9 +18,11 @@ class Stake():
     #Stake class will keep track of the current users who have stake for forging
     #and the users who have decided to pull their stake, but have not had their
     #money relased to them
-    def __init__(self):
+    def __init__(self, validated_job):
         self.__stakeHolders = {} #{userID: [amount of stake, date and time stake was added]}
         self.__waitingStake = {} #{userID: [amount of stake, date and time of stake removal]}
+        self.earnings = []       # when a forger has validated a transaction - forger.append(award)
+        self.validated_job = False# this can be used to determine o
         
     #Returns whether the given user is in the __stakeHolders dictionary or not
     def __isInDictionary(self, userID):

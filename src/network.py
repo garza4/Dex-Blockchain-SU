@@ -1,5 +1,6 @@
 import networkx as nx
 import setup as setup
+import hashlib as hlib
 
 
 """
@@ -22,7 +23,10 @@ class Transaction:
     #The transaction class is where all nodes are going to be made (since nodes are transactions). 
     #createTransaction will be the method to call in order to create a newNode in the graph. 
     
-     memPool = nx.Graph()
+     memPool = [nx.Graph()]
+     memPoolSize = 10
+     memPoolInc = 0
+     block_keys = []
      
      def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin, timestamp):
          self.sender = sender
@@ -56,12 +60,41 @@ class Transaction:
         
         sender.transactions.append(__newTransaction)                #the transaction will be saved to the users account
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
-        Transaction.memPool.add_node(__newTransaction)              #the last transaction is updated whenever a transaction is made by calling the ledger method. 
+        Transaction.memPool[Transaction.memPoolInc].add_node(__newTransaction)              #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.ledger(uniqueID, __newTransaction)  #add one node for the sender (__newTransaction)
-        Transaction.memPool.add_edge(__newTransaction, lastEntry)        
+        Transaction.memPool[Transaction.memPoolInc].add_edge(__newTransaction, lastEntry)        
         #in order to receive the latest transactions call ledger with uniqueID and a new transaction...
-        #for example - last_transaction = ledger(uniqueID, new_transaction)        
-        """
+        #for example - last_transaction = ledger(uniqueID, new_transaction)    
+        Transaction.blocks()
+        
+     # need a way to create different blocks and to distinguish where to start from in the mempool
+     #Made a list of graphs and a counter
+     def blocks():
+         #will only create blocks when the specified size is reached
+         #this function will create blocks, and it will be up to the forgers to validate all the transactions in the blocks we have...
+         #which is TODO
+         append_UIDS = ""
+         listOfNodes = Transaction.memPool[Transaction.memPoolInc].nodes(data=False) # list of nodes get all the nodes in the mempool graph
+         #Transaction.memPoolInc += 1
+         for node in listOfNodes:
+             key = append_UIDS + str(node.uniqueID)
+             
+         if len(Transaction.memPool[Transaction.memPoolInc]) >= Transaction.memPoolSize:
+             
+             if Transaction.memPoolInc > 0:
+                 key = key + Transaction.memPool[Transaction.memPoolInc - 1]
+                 Transaction.block_keys.append((Transaction.memPoolInc , hlib.sha256(key)))     
+                 Transaction.memPoolInc += 1 
+                 Transaction.memPool[Transaction.memPoolInc].append(nx.graph())
+             else: #firstBlock
+                 key = append_UIDS + key
+                 Transaction.block_keys.append((Transaction.memPoolInc , hlib.sha256(key)))
+                 Transaction.memPoolInc += 1 
+         
+                   
+        
+     
+     """
         the memPool can be the graph G. 
         We will have a function that goes through G and verifies transactions and once a transaction has been verified it will be added to the 
         actual graph. 
@@ -81,17 +114,20 @@ class Transaction:
      def __repr__(self):
          return str(self)
     
-        #call when we want to the validate the mempool
-  
-     def validateTransactions():
-         listOfNodes = Transaction.memPool.nodes(data=False)
-         print(listOfNodes)
-         #for nodes in listOfNodes:
-         #   print(str(nodes))  #here we will be able to access the nodes in the graph and validate that there was a legal transaction
+    
+    
+     #call when we want to the validate the mempool
+     #THIS METHOD NEEDS WORK
+     def __validateTransactions():
+         listOfNodes = Transaction.memPool[Transaction.memPoolInc].nodes(data=False) # list of nodes get all the nodes in the mempool graph
+         size_of_graph = len(Transaction.memPool[Transaction.memPoolInc])
          #reversed will start iterating from the last added node
          for nodes in reversed(listOfNodes):
-               #I have no idea why the uniqueID's are all 1529115084.2049956
-               print(nodes.uniqueID)
+               size_of_graph -= 1
+               #I have no idea why the uniqueID's are all 1529115084.2049956....
+               #print(nodes.uniqueID)
+               m_tree = hlib.sha256()
+               m_tree.update(str(nodes.uniqueID))
              
     
     
