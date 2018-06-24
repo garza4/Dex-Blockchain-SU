@@ -30,7 +30,7 @@ class CentralBank:
     while is_running:
         #need to figure out how to start looking for forgers using time
         start_of_day = datetime.datetime(8, 0, 0, 0) #8:00:00:00 AM
-        currTime = datetime.time.now()
+        currTime = datetime.datetime.now()
         
         if (currTime.hour - start_of_day.hour) == 0: #The current time is between 8 and 9 am
             if (currTime.minute - start_of_day.minute) == 0: # The current time is between 8 and 8:01 am
@@ -51,6 +51,16 @@ class CentralBank:
                         
                         #One forger, but notify all that were chosen.
                     """
+
+        # Continuously checks for forgers who have waited 30 to have their stake released
+        # Warning: I have not tested this loop and
+        #__waitingStake needs the name of an instance of the Stake class that I think was initialized in another file
+        for successfulForger in cA.Stake.__waitingStake:
+            timeStakeAdded = __waitingStake[successfulForger][1]
+            if (currTime - timeStakeAdded) >= 30:
+                #either make a new transaction to give forger their money back
+                #or directly add amount to account, but then there would be no record of it in the graph
+                del __waitingStake[successfulForger]
                 
         
         """
@@ -149,6 +159,7 @@ class User:
                 return False
         else:
             cA.Stake.addStake(ID, amount) #might need self
+            self.amountOfCoin["bnb"] -= amount #prevents user from spending money they have put up as stake
         return True    
         
     def purchaseCoins(user, bank, amount, crypto):
