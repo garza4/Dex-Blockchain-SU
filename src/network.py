@@ -62,12 +62,10 @@ class Transaction:
         receiver.transactions.append(__newTransaction)              #the transaction will be saved to the users account
         Transaction.memPool[Transaction.memPoolInc].add_node(__newTransaction)              #the last transaction is updated whenever a transaction is made by calling the ledger method. 
         lastEntry = Transaction.ledger(uniqueID, __newTransaction)  #add one node for the sender (__newTransaction)
-        Transaction.memPool[Transaction.memPoolInc].add_edge(__newTransaction, lastEntry)        
-        #in order to receive the latest transactions call ledger with uniqueID and a new transaction...
-        #for example - last_transaction = ledger(uniqueID, new_transaction)    
+        Transaction.memPool[Transaction.memPoolInc].add_edge(__newTransaction, lastEntry)           
         Transaction.blocks()
         
-     # need a way to create different blocks and to distinguish where to start from in the mempool
+        
      #Made a list of graphs and a counter
      def blocks():
          #will only create blocks when the specified size is reached

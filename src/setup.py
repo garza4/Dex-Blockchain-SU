@@ -23,7 +23,7 @@ class CentralBank:
         bank.amountOfCoinType[crypto] = amount #amount of coins to create
         bank.dictOfCoins[crypto] = crypto
         #is_running = True
-    
+        
     """
     at the start of the day (if the class is called) pick forgers 
     """
@@ -36,7 +36,11 @@ class CentralBank:
             if (currTime.minute - start_of_day.minute) == 0: # The current time is between 8 and 8:01 am
                 if (currTime.second - start_of_day.second) == 0: #The current time is between 8 and 8:00:01 am
                     list_of_holders = cA.chooseStakeHolders(20)
+                    for forgers in list_of_holders:
+                        forgers.alerts.append("You have been selected as a potential forger on " + str(datetime.datetime.now()))
+                        #FOR DANIEL enter command show alerts to show if users have been chosen as a forger. 
                     prime_stake = list_of_holders[0] 
+                    
                     #primeStake will be a privateKey for that user
                     """
                     The value for 'holders' can either be userID or user's private key depending on which unique value
