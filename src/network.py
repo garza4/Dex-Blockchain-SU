@@ -1,6 +1,7 @@
 import networkx as nx
 import setup as setup
 import hashlib as hlib
+import ConsensusAlgorithm as cA
 
 import datetime
 
@@ -112,16 +113,21 @@ class Transaction:
          return str(self)
     
     #assigns the blocks from the previous day for forger to validate
-     def __blocksToValidate():
+     def __blocksToValidate(forgerUserID):
         currTime = datetime.datetime.now()
         index = 0 
+        forgerEarnings = 0
         #should always check mempool at index 0 because __validateTransaction will delete 
         #the block that was validated making the next block to be validated at index 0
         transactionTime = Transaction.memPool[index].timeStamp
         while (currTime-transactionTime).days >= 0:
             if (currTime-transactionTime).minutes > 0:
-                nx.Transaction.__validateTransactions()
+                forgerEarnings += nx.Transaction.__validateTransactions()
                 transactionTime = Transaction.memPool[index].timeStamp
+                
+        #after validing all blocks necessary, forger's stake is removed and total earnings are added to the holding stake dict in Stake class
+        cA.Stake.removeStake(forgerUserID, forgerEarnings)
+        
         
     
      #call when we want to the validate one block in the mempool
@@ -133,6 +139,8 @@ class Transaction:
          size_of_graph = len(Transaction.memPool[0])
          graphOfValidTransactions = nx.Graph()
          lastNode = None
+         forgerEarnings = 0
+         forgerFeeRate = nx.Transaction.getForgerEarningRate()
          #reversed will start iterating from the last added node
          for nodes in reversed(listOfNodes):
                size_of_graph -= 1
@@ -156,7 +164,13 @@ class Transaction:
                        #complete transaction by adding amount to receiver account and removing amount from sender account
                        setup.User.sendCoin(nodes.sender,nodes.receiver, nodes.amount, nodes.typeOfCoin)
                        setup.User.receiveCoin(nodes.receiver, nodes.amount, nodes.typeOfCoin)
-                        
+                       
+                       #add fees to forgerEarnings
+                       forgerEarnings += nodes.amount*forgerFeeRate
+                       
+                       #add validated transaction to leger
+                       nx.Transaction.ledger(nodes.uniqueID, nodes)
+                       
         #add new block to the official graph/blockchain?
          setup.CentralBank.blockChain.addBlock(graphOfValidTransactions)
         
@@ -166,12 +180,20 @@ class Transaction:
         #is this for a merkle tree?
          m_tree = hlib.sha256()
          m_tree.update(str(nodes.uniqueID))
+         return forgerEarnings
              
     
     
      #ledger will create a log of all transactions
      __lastTransaction = None
      __history = [None] * 1000000 #history is initialized to be 1000000 big all occupied with none
+     
+     
+     #This rate will change depending on the market and can be set in this method
+     #as of 6/29/2018 it is set to 1% of the amount irregardless of the crypto type
+     def getForgerEarningRate():
+         currForgerFee = .01
+         return currForgerFee
      
      def ledger(uniqueID, transaction):
         """
