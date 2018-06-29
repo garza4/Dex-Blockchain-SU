@@ -2,6 +2,8 @@ import networkx as nx
 import setup as setup
 import hashlib as hlib
 
+import datetime
+
 
 """
 
@@ -28,12 +30,14 @@ class Transaction:
      memPoolInc = 0
      block_keys = []
      
-     def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin, timestamp):
+     def __init__(self, sender, receiever, amount, uniqueID, typeOfCoin, timestamp, srcTransactionID):
          self.sender = sender
          self.receiver = receiever
          self.amount = amount
          self.uniqueID = uniqueID
          self.typeOfCoin = typeOfCoin
+         self.timeStamp = timestamp
+         self.sourceOfCoin = srcTransactionID   #the unique ID of the transaction from where the sender received the money they want to send
      
     
     
@@ -47,10 +51,10 @@ class Transaction:
      
      
      
-     def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin):
+     def createTransaction(sender, receiver, amount, transactionTime, uniqueID, typeOfCoin, srcTransactionID):
         
        # __newTransaction = setup.Node(amount, sender, receiver, transactionTime, uniqueID, typeOfCoin) #private instance of the node class
-        __newTransaction = Transaction(sender,receiver, amount, transactionTime, uniqueID, typeOfCoin) 
+        __newTransaction = Transaction(sender,receiver, amount, transactionTime, uniqueID, typeOfCoin, srcTransactionID) 
         #print(__newTransaction)
         
         sender.sendCoin(receiver, amount, typeOfCoin)                         #the first parameter for sendCoin is taken care of by the sender var
@@ -112,20 +116,60 @@ class Transaction:
      def __repr__(self):
          return str(self)
     
+    #assigns the blocks from the previous day for forger to validate
+     def __blocksToValidate():
+        currTime = datetime.datetime.now()
+        index = 0 #should always check mempool at index 0 because __validateTransaction will delete 
+        #the block that was validated making the next block to be validated at index 0
+        transactionTime = Transaction.memPool[index].timeStamp
+        while (currTime-transactionTime).days >= 0:
+            if (currTime-transactionTime).minutes > 0:
+                nx.Transaction.__validateTransactions()
+                transactionTime = Transaction.memPool[index].timeStamp
+        
     
-    
-     #call when we want to the validate the mempool
+     #call when we want to the validate one block in the mempool
      #THIS METHOD NEEDS WORK
      def __validateTransactions():
-         listOfNodes = Transaction.memPool[Transaction.memPoolInc].nodes(data=False) # list of nodes get all the nodes in the mempool graph
-         size_of_graph = len(Transaction.memPool[Transaction.memPoolInc])
+         #Note: I think the index we want to use is 0 not Transaction.memPoolInc becuase we want the earliest created block to be valiedated first
+         #if the mempool is not set up like a queue, please change back to the way it was
+         listOfNodes = Transaction.memPool[0].nodes(data=False) # list of nodes get all the nodes in the mempool graph at the earliest created block
+         size_of_graph = len(Transaction.memPool[0])
+         graphOfValidTransactions = nx.Graph
+         lastNode = None
          #reversed will start iterating from the last added node
          for nodes in reversed(listOfNodes):
                size_of_graph -= 1
                #I have no idea why the uniqueID's are all 1529115084.2049956....
                #print(nodes.uniqueID)
-               m_tree = hlib.sha256()
-               m_tree.update(str(nodes.uniqueID))
+               
+               #look at the reference transaction for the amount given to sender
+               srcForSender = nodes.sourceOfCoin #unique of ID of the transaction the sender claims they received the money from
+               srcTransaction = Transaction.__history[srcForSender]
+               
+               #We will assume that the coin type must be the same between the two transactions
+               if nodes.typeOfCoin == srcTransaction.typeOfCoin:
+                   #there is enough money to transfer
+                   #though this doesn't take into account if the sender has already referenced this transaction
+                   if srcTransaction.amount >= nodes.amount: 
+                       #add it to the graph for the new block
+                       graphOfValidTransactions.add_node(nodes)
+                       graphOfValidTransactions.add_edge(nodes, lastNode)
+                       lastNode = nodes
+                       
+                       #complete transaction by adding amount to receiver account and removing amount from sender account
+                       setup.User.sendCoin(nodes.sender,nodes.receiver, nodes.amount, nodes.typeOfCoin)
+                       setup.User.receiveCoin(nodes.receiver, nodes.amount, nodes.typeOfCoin)
+                        
+        #add new block to the official graph/blockchain?
+         setup.CentralBank.blockChain.addBlock(graphOfValidTransactions)
+        
+        #remove the first block from the mempool
+         Transaction.memPool.pop(0)  
+               
+        #is this for a merkle tree?
+         m_tree = hlib.sha256()
+         m_tree.update(str(nodes.uniqueID))
              
     
     
@@ -154,7 +198,44 @@ class Transaction:
          return Transaction.__lastTransaction
      
      
-         
+class Block():
+    def __init__(self, graph, currHash, prevHash, timestamp):
+        self.hashOfBlock = currHash
+        self.hashOfPrevBlock = prevHash
+        self.Graph = graph
+        self.time = timestamp
+        
+    def getGraph(self):
+        return self.Graph
+    
+    def getHash(self):
+        return self.hashOfBlock
+    
+    def getPrevHash(self):
+        return self.hashOfPrevBlock
+    
+    def getTimeStamp(self):
+        return self.time
+        
+class BlockChain():
+    def __init__(self):
+        self.blockHashes = []
+        
+    def addBlock(self, graph):
+        currHash = 0
+        graphHash = hlib.sha256(graph)
+        currDate = datetime.datetime.now()
+        currDateHash = hlib.sha256(currDate)
+        
+        if len(self.blockHashes) == 0: #this is the first block in the chain
+            currHash = hlib.sha256(graphHash + currDateHash + hlib.sha256(0),currDate)
+            Block(graph, currHash, 0)
+        else: #there is at least one other block in the chain
+            currHash = hlib.sha256(graphHash + currDateHash + hlib.sha256(self.blockHashes[-1]))
+            Block(graph, currHash, self.blockHashes[-1],currDate)
+            
+        self.blockHashes.append(currHash)
+        
 """   
 class Token(Transaction):
     
