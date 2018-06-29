@@ -13,6 +13,7 @@
 """   
 import datetime
 import random
+import setup 
 
 class Stake():
     #Stake class will keep track of the current users who have stake for forging
@@ -36,10 +37,20 @@ class Stake():
         self.__stakeHolders[userID] = [amount, datetime.datetime.now() - datetime.timedelta(days=31)]
     
     #Removes the userID form __stakeHolder and adds ID and amount to _waitingStake if user currently holds stake
-    def removeStake(self, userID): 
+    #This is used in the blocksToValidate method
+    def removeStake(self, userID, forgerEarnings): 
         if self.__isInDictionary(userID):
-            self.__waitingStake[userID] = [self.__stakeHolders[userID][0], datetime.datetime.now()]
+            totalAmount = self.__stakeHolders[userID][0] + forgerEarnings
+            self.__waitingStake[userID] = [totalAmount, datetime.datetime.now()]
             print (self.__waitingStake)
+            del self.__stakeHolders[userID]
+        else:
+            print ('User ', userID, ' is not a stake holder')
+            
+    #used if stakeholder decides to remove their money from the pool before they become a forger
+    def removeStakeWithoutReward(self, userID):
+        if self.__isInDictionary(userID):
+            setup.User.receiveCoin(userID, self.__stakeHolders[userID][0], "bnb")
             del self.__stakeHolders[userID]
         else:
             print ('User ', userID, ' is not a stake holder')
