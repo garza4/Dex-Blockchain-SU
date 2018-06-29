@@ -8,6 +8,8 @@ import datetime
 
 
 class CentralBank:
+    blockChain = net.BlockChain()
+    stakeHolders = cA.Stake()
     # CentralBank will keep track of information such as coin count, coin creation,
     # circulation, and totalCoins
     is_running = False
@@ -63,11 +65,11 @@ class CentralBank:
         # Warning: I have not tested this loop and
         #__waitingStake needs the name of an instance of the Stake class that I think was initialized in another file
         for successfulForger in cA.Stake.__waitingStake:
-            timeStakeAdded = __waitingStake[successfulForger][1]
+            timeStakeAdded = stakeHolders.__waitingStake[successfulForger][1]
             if (currTime - timeStakeAdded) >= 30:
                 #either make a new transaction to give forger their money back
                 #or directly add amount to account, but then there would be no record of it in the graph
-                del __waitingStake[successfulForger]
+                del stakeHolders.__waitingStake[successfulForger]
                 
         
         """
@@ -118,6 +120,8 @@ class User:
     def __getUniqueID(user):
         return user.privateKey
 
+    #used in __validateTransactions method of the Transaction class
+    #need a new method to call from the command line that will create a new transaction
     def sendCoin(sender,receiver, amountToSend, typeOfCoin):
         if amountToSend > sender.amountOfCoin[typeOfCoin]:
             print ("Exceeded amount of coin to send")
@@ -128,6 +132,7 @@ class User:
             sender.amountOfCoin[typeOfCoin] = temp
             return True
 
+    #used in __validateTransactions method of the Transaction class
     def receiveCoin(receiver, receivingAmount, typeOfCoin):
         if typeOfCoin not in receiver.amountOfCoin.keys():
             receiver.amountOfCoin[typeOfCoin] = receivingAmount
@@ -211,6 +216,6 @@ class newToken():
                                     #why not just make a dict of newTokens that has the supply and symbol instead of a new centralBank instance for each token?
         self.value=decimalValue
 
-    def calculateCost(totalSupply, decimalValue):
-       _cost= (totalSupply * decimalValue) #cost is calculated by the user defined value for the token compared to Binance Coin multiplied by the total amount, removing that amount of Binance coin and replacing it with the new token
+    def calculateCost(self, totalSupply, decimalValue):
+       self._cost= (totalSupply * decimalValue) #cost is calculated by the user defined value for the token compared to Binance Coin multiplied by the total amount, removing that amount of Binance coin and replacing it with the new token
     # def buyCoin(symbol, coinNum): No buying coins, we can just swap them on the decentralized Exchange when implemented, letting the users define the cost of a coin
