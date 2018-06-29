@@ -81,7 +81,8 @@ class Transaction:
          for node in listOfNodes:
              key = append_UIDS + str(node.uniqueID)
              
-         if len(Transaction.memPool[Transaction.memPoolInc]) >= Transaction.memPoolSize:
+         #Each mempool is only going to have a ccertain number of nodes in them, right now it is 10.     
+         if len(Transaction.memPool[Transaction.memPoolInc]) == Transaction.memPoolSize:
              
              if Transaction.memPoolInc > 0:
                  key = key + Transaction.memPool[Transaction.memPoolInc - 1]
@@ -93,20 +94,14 @@ class Transaction:
                  Transaction.block_keys.append((Transaction.memPoolInc , hlib.sha256(key)))
                  Transaction.memPoolInc += 1 
          
-                   
+             Transaction.memPoolInc = 0      
         
      
      """
-        the memPool can be the graph G. 
-        We will have a function that goes through G and verifies transactions and once a transaction has been verified it will be added to the 
-        actual graph. 
-        The function will take a graph and verify nodes which are transactions
+        the memPool will be a list of blocks that will be validated by a forger
         Found a way that could make this process easy - https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.Graph.nodes.html
         .data returns an nlist of nodes which we can then use to verify transactions. 
-        
     
-        Need to start thinking about threadSafe code so that if our code is running on the cloud nothing gets messed up
-        Research Locks and such for python
         """
      
      def __str__(self):
@@ -119,7 +114,8 @@ class Transaction:
     #assigns the blocks from the previous day for forger to validate
      def __blocksToValidate():
         currTime = datetime.datetime.now()
-        index = 0 #should always check mempool at index 0 because __validateTransaction will delete 
+        index = 0 
+        #should always check mempool at index 0 because __validateTransaction will delete 
         #the block that was validated making the next block to be validated at index 0
         transactionTime = Transaction.memPool[index].timeStamp
         while (currTime-transactionTime).days >= 0:
@@ -135,7 +131,7 @@ class Transaction:
          #if the mempool is not set up like a queue, please change back to the way it was
          listOfNodes = Transaction.memPool[0].nodes(data=False) # list of nodes get all the nodes in the mempool graph at the earliest created block
          size_of_graph = len(Transaction.memPool[0])
-         graphOfValidTransactions = nx.Graph
+         graphOfValidTransactions = nx.Graph()
          lastNode = None
          #reversed will start iterating from the last added node
          for nodes in reversed(listOfNodes):
